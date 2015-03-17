@@ -100,4 +100,79 @@ public class TestTime {
     }
 }
 
+@Test public void testGetDayInWeek()
+{
+    try
+    {
+        Time time = new Time(2015, 3, 17, 14, 8);
+        time.getDayInWeek();
+        
+    }
+    catch (IllegalArgumentException exc){
+        fail("Ongeldige datum");
+    }
+    
+    try
+    {
+        Time time = new Time(2015, 3, 31, 14, 8);
+        time.getDayInWeek();
+    }
+    catch (IllegalArgumentException exc){
+        fail("Ongeldige datum");
+    }
+    
+    try
+    {
+        Time time = new Time(2015, 3, 1, 14, 8);
+        time.getDayInWeek();
+    }
+    catch (IllegalArgumentException exc){
+        fail("Ongeldige datum");
+    }
+}
+
+@Test public void testPlus()
+{
+    try
+    {
+        ITime time = new Time(2015, 3, 17, 14, 15);
+        time = time.plus(5);
+        assertEquals(20, time.getMinutes());
+    }
+    catch (IllegalArgumentException exc)
+    {
+        
+    }
+    
+    try
+    {
+        ITime time = new Time(2015, 3, 17, 14, 53);
+        time = time.plus(6);
+        assertEquals(59, time.getMinutes());
+    }
+    catch (IllegalArgumentException exc){
+        
+    }
+    
+    try
+    {
+        ITime time = new Time(2015, 3, 17, 14, 53);
+        time = time.plus(-3);
+        assertEquals(50, time.getMinutes());
+    }
+    catch (IllegalArgumentException exc){
+        
+    }
+    
+    try
+    {
+        ITime time = new Time(2015, 3, 17, 14, 55);
+        time = time.plus(-56);
+        assertEquals(59, time.getMinutes());
+    }
+    catch (IllegalArgumentException exc){
+        
+    }
+}
+
 }

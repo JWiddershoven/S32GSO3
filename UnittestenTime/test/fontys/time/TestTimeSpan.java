@@ -11,7 +11,7 @@ import org.junit.Before;
 
 /**
  *
- * @author Jelle
+ * @author Jordy
  */
 public class TestTimeSpan {
    @Before public void setUp(){}
@@ -24,7 +24,7 @@ public class TestTimeSpan {
      Time bt = new Time(2015, 3, 10, 9, 46);
      Time et = new Time(2015, 3, 11, 9, 46);
      TimeSpan ts = new TimeSpan(bt, et);
-     int length = ts.length();   
+     int length = ts.length();
      
      ts.changeLengthWith(4);
      assertEquals(length + 4, ts.length());
