@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gebruiker/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/ITime.java</file>
-            <file>file:/C:/Users/Gebruiker/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/TimeSpan.java</file>
-            <file>file:/C:/Users/Gebruiker/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/Time.java</file>
-            <file>file:/C:/Users/Gebruiker/Documents/GitHub/S32GSO3/UnittestenTime/test/fontys/time/TestTimeSpan.java</file>
-            <file>file:/C:/Users/Gebruiker/Documents/GitHub/S32GSO3/UnittestenTime/test/fontys/time/TestTime.java</file>
+            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/Time.java</file>
+            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/test/fontys/time/TestTime.java</file>
         </group>
     </open-files>
 </project-private>

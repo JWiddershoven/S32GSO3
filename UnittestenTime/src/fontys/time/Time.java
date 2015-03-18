@@ -112,6 +112,6 @@ public class Time implements ITime {
     @Override
     public int difference(ITime time) {
         Time t = (Time) time;
-        return (int) ((this.gc.getTimeInMillis() - t.gc.getTimeInMillis()) / 600000);
+        return (int) ((this.gc.getTimeInMillis() - t.gc.getTimeInMillis()) / 60000);
     }
 }
