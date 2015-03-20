@@ -147,15 +147,33 @@ public class TestTime {
     }
 
     @Test
-    public void testCompareTo() //Time.compareTo methode controleren, waarschijnlijk een fout.
+    public void testCompareTo()
     {
         try {
-            Time t1 = new Time(2015, 3, 18, 19, 26);
-            Time t2 = new Time(2015, 3, 18, 19, 25);
-            int result = t2.compareTo(t1);
+            Time t1 = new Time(2015, 3, 18, 19, 25);
+            Time t2 = new Time(2015, 3, 18, 19, 26);
+            int result = t1.compareTo(t2);
             assertEquals(1, result);
         } catch (IllegalArgumentException exc) {
             fail("t1 moet groter zijn dan t2");
+        }
+        
+        try {
+            Time t1 = new Time(2015, 3, 18, 19, 25);
+            Time t2 = new Time(2015, 3, 18, 19, 25);
+            int result = t1.compareTo(t2);
+            assertEquals(0, result);
+        } catch (IllegalArgumentException exc) {
+            fail("t1 moet gelijk zijn aan t2");
+        }
+        
+        try {
+            Time t1 = new Time(2015, 3, 18, 19, 26);
+            Time t2 = new Time(2015, 3, 18, 19, 25);
+            int result = t1.compareTo(t2);
+            assertEquals(-1, result);
+        } catch (IllegalArgumentException exc) {
+            fail("t2 moet groter zijn dan t1");
         }
     }
 
