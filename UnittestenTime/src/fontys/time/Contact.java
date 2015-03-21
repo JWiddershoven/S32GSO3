@@ -24,6 +24,9 @@ public class Contact {
      */
     public Contact(String name)
     {
+        if (name.equals("")) {
+            throw new IllegalArgumentException("Naam mag geen lege string zijn.");
+        }
         this.name = name;
         agenda = new ArrayList<>();
     }
