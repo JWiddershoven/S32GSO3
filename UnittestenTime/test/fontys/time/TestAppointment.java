@@ -5,34 +5,69 @@
  */
 package fontys.time;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
+
 /**
  *
- * @author Jordy
+ * @author Jelle
  */
 public class TestAppointment {
     
-    @Test public void testAppointment()
-    {
-        /**
-     * Er wordt een nieuwe appointment gecreëerd met een subject en timespan.
-     * Deze appointment krijgt een lege lijst met deelnemers.
-     * @param subject subject mag een lege string zijn.
-     * @param timeSpan
+     /**
+     * Er wordt een nieuwe appointment gecreëerd met een subject en timeSpan.
+     * @param subject het onderwerp van een afspraak, mag een lege string zijn.
+     * @param timeSpan de timeSpan van een afspraak.
      */
+    @Test
+    public void testAppointment()
+    {
+        // @param subject het onderwerp van een afspraak, mag een lege string zijn.
         try {
-            String subject = "Test";
-            TimeSpan ts = new TimeSpan(new Time(2015, 3, 22, 11, 35), new Time(2015, 3, 22, 11, 50));
-            Appointment a = new Appointment(subject, ts);
-            
-            String subject2 = "";
-            Appointment a2 = new Appointment(subject2, ts);
-            
+            Appointment app = new Appointment("", new TimeSpan(new Time(2015, 3, 23, 10, 00), new Time(2015, 3, 23, 11, 00)));
+            assertEquals("", app.getSubject());
         } catch (IllegalArgumentException exc) {
-            fail("Subject mag een lege string bevatten");
+            
+        }
+        
+        // @param timeSpan de timeSpan van een afspraak.
+        try {
+            TimeSpan ts = new TimeSpan(new Time(2015, 3, 23, 10, 00), new Time(2015, 3, 23, 11, 00));
+            Appointment app = new Appointment("meeting", ts);
+            assertEquals(ts, app.getTimeSpan());
+        } catch (IllegalArgumentException exc) {
+            
         }
     }
     
+    @Test
+    public void testAddContact()
+    {
+        Contact con = new Contact("Jelle");
+        Appointment app = new Appointment("overleg", new TimeSpan(new Time(2015, 3, 23, 17, 00), new Time(2015, 3, 23, 18, 00)));
+        
+        try {
+            boolean result = app.addContact(con);
+            assertEquals(true, result);
+        } catch (IllegalArgumentException exc) {
+            
+        }
+                 
+    }
+    
+    @Test 
+    public void testRemoveContact()
+    {
+        try {
+            Appointment a = new Appointment("vergadering2", new TimeSpan(new Time(2015, 3, 23, 15, 00), new Time(2015, 3, 23, 16, 00)));
+            Contact con = new Contact("Jelle");
+            a.removeContact(con);
+        } catch (IllegalArgumentException exc) {
+            
+        }
+    }
 }

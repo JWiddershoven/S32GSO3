@@ -10,78 +10,75 @@ import java.util.Iterator;
 
 /**
  *
- * @author Jordy
+ * @author Jelle
  */
-
 public class Appointment {
-    private String subject;
-    private ITimeSpan ts;
-    private ArrayList<Contact> deelnemers;
     
+    private String subject;
+    private ITimeSpan timeSpan;
+    private ArrayList<Contact> invitees;
     
     /**
-     * Er wordt een nieuwe appointment gecreëerd met een subject en timespan.
-     * Deze appointment krijgt een lege lijst met deelnemers.
-     * @param subject subject mag een lege string zijn.
-     * @param timeSpan
+     * Er wordt een nieuwe appointment gecreëerd met een subject en timeSpan.
+     * @param subject het onderwerp van een afspraak, mag een lege string zijn.
+     * @param timeSpan de timeSpan van een afspraak.
      */
     public Appointment(String subject, ITimeSpan timeSpan)
     {
         this.subject = subject;
-        this.ts = timeSpan;
-        this.deelnemers = new ArrayList<>();
+        this.timeSpan = timeSpan;
+        invitees = new ArrayList<>();
     }
-    
-    /** @return de subject van deze appointment */
-    public String getSubject()
+    /**
+     * @return het subject van een appointment.
+     */
+    public String getSubject() 
     {
-        return subject;
-    }
-    
-    /** @return de timespan van deze appointment */
-    public ITimeSpan getTimeSpan()
-    {
-        return ts;
+        return this.subject;
     }
     
     /**
-     * @return een Iterator met alle deelnemers van de appointment.
+     * @return de timeSpan van een appointment.
+     */
+    public ITimeSpan getTimeSpan()
+    {
+        return this.timeSpan;
+    }
+    
+    /**
+     * @return een Iterator met alle genodigden van een appointment.
      */
     public Iterator<Contact> invitees()
     {
-        Iterator itr = deelnemers.iterator();
+        Iterator itr = invitees.iterator();
         return itr;
     }
     
     /**
-     * Er wordt een contact toegevoegd aan de appointment.
-     * @param c Contact moet een naam bevatten.
-     * @return true indien de Contact is toegevoegd aan de appointment, anders false.
+     * @param c het contact dat wordt toegevoegd aan de appointment.
+     * @return true indien het contact is toegevoegd aan de appointment, anders false.
      */
     public boolean addContact(Contact c)
     {
-        if (deelnemers.contains(c))
+        while (c.appointments().hasNext())
         {
-            return false;
+            if (c.appointments().next().timeSpan.isPartOf(timeSpan))
+            {
+                return false;
+            }
         }
-        else
-        {
-            deelnemers.add(c);
-            return true;
-        }
+        invitees.add(c);
+        return true;
     }
     
     /**
-     * Er wordt een contact verwijderd van de appointment indien deze voorkomt.
-     * @param c Contact moet voorkomen in deelnemers van het appointment.
+     * @param c het contact dat wordt verwijderd uit de appointment.
      */
     public void removeContact(Contact c)
     {
-        if (deelnemers.contains(c))
+        if (invitees.contains(c))
         {
-            deelnemers.remove(c);
+            invitees.remove(c);
         }
     }
-    
-    
 }
