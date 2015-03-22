@@ -25,7 +25,6 @@ public void testContact()
      * Er wordt een nieuw contact gecreëerd met een naam.
      * Dit contact krijgt een nieuwe, lege agenda.
      */
-    
     // @param name naam mag geen lege string zijn.
     try {
         Contact con = new Contact("Jelle");
@@ -45,21 +44,27 @@ public void testContact()
 @Test
 public void testAddAppointment() {
     
-    Appointment a = new Appointment("vergadering", new TimeSpan(new Time(2015, 3, 22, 18, 38), new Time(2015, 3, 22, 19, 00)));
+    Appointment a = new Appointment(); //to-do: geef subject en TimeSpan mee als parameter
     Contact con = new Contact("Jelle");
-    
     try { 
         boolean result = con.addAppointment(a);
         assertEquals(true, result);
     } catch (IllegalArgumentException exc) {
         
     }
+    
+    try {
+        boolean result = con.addAppointment(a);
+        assertEquals(false, result);
+    } catch (IllegalArgumentException exc) {
+        
+    }
 }
 
 @Test
-public void testRemoveAppointment() {
+public void testRemoveAppointment() { //To-do: Checken of de appointment daadwerkelijk uit de lijst is verdwenen. Iterator to list?
     try {
-        Appointment a = new Appointment("vergadering2", new TimeSpan(new Time(2015, 3, 23, 15, 00), new Time(2015, 3, 23, 16, 00)));
+        Appointment a = new Appointment();
         Contact con = new Contact("Jelle");
         con.removeAppointment(a);
     } catch (IllegalArgumentException exc) {
