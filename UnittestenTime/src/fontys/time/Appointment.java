@@ -7,7 +7,7 @@ package fontys.time;
 
 /**
  *
- * @author Jelle
+ * @author Jordy
  */
 public class Appointment {
     
