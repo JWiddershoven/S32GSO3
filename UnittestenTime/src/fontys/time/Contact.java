@@ -42,7 +42,7 @@ public class Contact {
      * @param a appointment moet een subject en TimeSpan bevatten.
      * @return true indien de Appointment is toegevoegd aan de agenda, anders false.
      */
-    protected boolean addAppointment(Appointment a) //To-do: check TimeSpan van een appointment.
+    protected boolean addAppointment(Appointment a)
     {
         if (agenda.contains(a))
         {
