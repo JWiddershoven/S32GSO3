@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>src/fontys/time/TimeSpan.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>95</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/src/fontys/time/TimeSpan.java</file>
             <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/test/fontys/time/TestTime.java</file>
             <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/src/fontys/time/ITimeSpan.java</file>
+            <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/test/fontys/time/TestContact.java</file>
+            <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/src/fontys/time/Appointment.java</file>
+            <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/test/fontys/time/TestAppointment.java</file>
             <file>file:/C:/Users/Jordy/Documents/Leerjaar%202/GSO/UnittestenTimeJordyEnJelle/UnittestenTime/test/fontys/time/TestTimeSpan.java</file>
-=======
-            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/Contact.java</file>
-            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/src/fontys/time/TimeSpan.java</file>
-            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/test/fontys/time/TestTimeSpan.java</file>
-            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/UnittestenTime/test/fontys/time/TestTime.java</file>
->>>>>>> 321c103ee80f854cc47b179e9ea67889494b2014
         </group>
     </open-files>
 </project-private>

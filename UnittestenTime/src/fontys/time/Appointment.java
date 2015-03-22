@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author Jelle
+ * @author Jordy
  */
 
 public class Appointment {
