@@ -5,7 +5,6 @@
  */
 package aexbannerapplicatie;
 
-import com.sun.prism.paint.Paint;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
