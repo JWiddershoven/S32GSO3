@@ -50,6 +50,7 @@ public class AEXBannerApplicatie extends Application {
         super.start();
     }
     
+    
 };
     
     

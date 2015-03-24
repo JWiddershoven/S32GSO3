@@ -5,14 +5,22 @@
  */
 package aexbannerapplicatie;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
  *
  * @author Jelle
  */
-public class BannerController {
+public class BannerController extends Application {
     
-    public BannerController()
-    {
-        
+    private AEXBanner banner;
+    private IEffectenbeurs effectenbeurs;
+    
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        banner = new AEXBanner();
+        banner.start(new Stage());
+        effectenbeurs = new MockEffectenBeurs();
     }
 }
