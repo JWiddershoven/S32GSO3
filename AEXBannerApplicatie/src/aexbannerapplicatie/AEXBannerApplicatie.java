@@ -5,6 +5,7 @@
  */
 package aexbannerapplicatie;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,5 +34,23 @@ public class AEXBannerApplicatie extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    AnimationTimer timer = new AnimationTimer() {
+    private long prevUpdate;
+
+    @Override public void handle(long now) {
+        long lag = now - prevUpdate;
+        if (lag >= 20000000) {
+            // Update JavaFX Scene Graph
+            prevUpdate = now;
+        }
+    }
+    @Override public void start() {
+        prevUpdate = System.nanoTime();
+        super.start();
+    }
+    
+};
+    
     
 }

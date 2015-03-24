@@ -15,6 +15,5 @@ public class MockEffectenBeurs implements IEffectenbeurs{
     public IFonds[] getKoersen() {
         return null;
     }
-   
-    
+  
 }
