@@ -6,6 +6,7 @@
 package aexbannerapplicatie;
 
 import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -18,19 +19,29 @@ import javafx.stage.WindowEvent;
 public class BannerController extends Application {
 
     private AEXBanner banner;
-//  private IEffectenBeurs effectenbeurs;
+    private IEffectenbeurs effectenbeurs;
 
     @Override
     public void start(Stage primaryStage) {
         banner = new AEXBanner();
+        effectenbeurs = new MockEffectenBeurs();
         //primaryStage acts as the common stage of the AEXBanner and the 
         //BannerController:
         banner.start(primaryStage);
 
         //create a timer which polls every 2 seconds
         Timer pollingTimer = null;
-        // todo
+        pollingTimer.scheduleAtFixedRate(new TimerTask() {
 
+            @Override
+            public void run() {
+                String koersen = "";
+                for (IFonds I : effectenbeurs.getKoersen()) {
+                    koersen = koersen + I.toString();
+                }
+                banner.setKoersen(koersen);
+            }
+        }, 0, 2000);
         
         //remove pollingTimer as soon as primaryStage is closing:
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
