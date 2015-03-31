@@ -27,6 +27,14 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
      * @throws java.rmi.RemoteException
      */
     public MockEffectenBeurs() throws RemoteException {
+        try {
+            Registry registry = LocateRegistry.createRegistry(1099);
+            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
+            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
+
+        } catch (RemoteException ex) {
+
+        }
         koersenTimer();
     }
 
@@ -39,17 +47,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        
-                        try {
-                            Registry registry = LocateRegistry.createRegistry(1099);
-                            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
-                            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
-                        } catch (RemoteException ex) {
-
-                        }
-                        
                         generateKoersen();
-                                            
                     }
                 });
             }

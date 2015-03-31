@@ -5,11 +5,13 @@
  */
 package aexbannerapplicatie;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jelle
  */
-public class Fonds implements IFonds{
+public class Fonds implements IFonds, Serializable{
 
     private String naam;
     private double koers;
