@@ -8,6 +8,7 @@ package aexbannerapplicatie;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -30,19 +31,26 @@ public class BannerController extends Application {
         banner.start(primaryStage);
 
         //create a timer which polls every 2 seconds
-        Timer pollingTimer = null;
-        pollingTimer.scheduleAtFixedRate(new TimerTask() {
+        Timer pollingTimer = new Timer();
+        TimerTask task = new TimerTask() {
 
             @Override
             public void run() {
-                String koersen = "";
-                for (IFonds I : effectenbeurs.getKoersen()) {
-                    koersen = koersen + I.toString();
-                }
-                banner.setKoersen(koersen);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        String koers = "";
+                        for (IFonds i : effectenbeurs.getKoersen()) {
+                            koers += i.getNaam() + " " + i.getKoers() + " ";
+                        }
+                        banner.setKoersen(koers);
+                    }
+                });
             }
-        }, 0, 2000);
-        
+        };
+
+        pollingTimer.scheduleAtFixedRate(task, 0, 2000);
+
         //remove pollingTimer as soon as primaryStage is closing:
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
             pollingTimer.cancel();

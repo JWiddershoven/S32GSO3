@@ -25,7 +25,7 @@ public class AEXBanner extends Application {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;
-    public static final int NANO_TICKS = 20000000; 
+    public static final int NANO_TICKS = 20000000;
     // FRAME_RATE = 1000000000/NANO_TICKS = 50;
 
     private Text text;
@@ -56,8 +56,13 @@ public class AEXBanner extends Application {
             public void handle(long now) {
                 long lag = now - prevUpdate;
                 if (lag >= NANO_TICKS) {
-                    // calculate next location of text
-                    // todo
+                    if (textPosition > -textLength) {
+                        textPosition = textPosition - 10;
+                        text.relocate(textPosition, 0);
+                        prevUpdate = now;
+                    } else {
+                        textPosition = WIDTH;
+                    }
                 }
             }
 
@@ -70,6 +75,7 @@ public class AEXBanner extends Application {
                 super.start();
             }
         };
+
         timer.start();
     }
 
