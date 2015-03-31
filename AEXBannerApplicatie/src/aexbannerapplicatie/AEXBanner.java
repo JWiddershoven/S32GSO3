@@ -9,11 +9,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 

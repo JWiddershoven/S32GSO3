@@ -5,11 +5,17 @@
  */
 package aexbannerapplicatie;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -23,7 +29,7 @@ public class BannerController extends Application {
     private IEffectenbeurs effectenbeurs;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException {
         banner = new AEXBanner();
         effectenbeurs = new MockEffectenBeurs();
         //primaryStage acts as the common stage of the AEXBanner and the 
@@ -40,8 +46,15 @@ public class BannerController extends Application {
                     @Override
                     public void run() {
                         String koers = "";
-                        for (IFonds i : effectenbeurs.getKoersen()) {
-                            koers += i.getNaam() + " " + i.getKoers() + " ";
+                        try {
+                            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
+                            IEffectenbeurs mockeffectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
+                            effectenbeurs = mockeffectenbeurs;
+                            for (IFonds i : effectenbeurs.getKoersen()) {
+                                koers += i.getNaam() + " " + i.getKoers() + " ";
+                            }
+                        } catch (RemoteException | NotBoundException ex) {
+                            
                         }
                         banner.setKoersen(koers);
                     }

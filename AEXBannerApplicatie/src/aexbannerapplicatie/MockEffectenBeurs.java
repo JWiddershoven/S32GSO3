@@ -5,7 +5,10 @@
  */
 package aexbannerapplicatie;
 
-import java.text.DecimalFormat;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,11 +18,15 @@ import javafx.application.Platform;
  *
  * @author Jelle
  */
-public class MockEffectenBeurs implements IEffectenbeurs {
+public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
 
     private IFonds[] fondsen;
 
-    public MockEffectenBeurs() {
+    /**
+     *
+     * @throws java.rmi.RemoteException
+     */
+    public MockEffectenBeurs() throws RemoteException {
         koersenTimer();
     }
 
@@ -32,7 +39,17 @@ public class MockEffectenBeurs implements IEffectenbeurs {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        
+                        try {
+                            Registry registry = LocateRegistry.createRegistry(1099);
+                            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
+                            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
+                        } catch (RemoteException ex) {
+
+                        }
+                        
                         generateKoersen();
+                                            
                     }
                 });
             }
@@ -52,7 +69,8 @@ public class MockEffectenBeurs implements IEffectenbeurs {
     }
 
     @Override
-    public IFonds[] getKoersen() {
+    public IFonds[] getKoersen() throws RemoteException {
+
         return this.fondsen;
     }
 
@@ -66,5 +84,4 @@ public class MockEffectenBeurs implements IEffectenbeurs {
         }
         return koers;
     }
-
 }

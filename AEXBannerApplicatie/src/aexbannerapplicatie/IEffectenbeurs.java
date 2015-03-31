@@ -5,14 +5,17 @@
  */
 package aexbannerapplicatie;
 
+import java.rmi.*;
 /**
  *
  * @author Jelle
  */
-public interface IEffectenbeurs {
+public interface IEffectenbeurs extends Remote {
     
     /**
      * @return De fondsen.
+     * @throws java.rmi.RemoteException
      */
-    public IFonds[] getKoersen();
+    public IFonds[] getKoersen() throws RemoteException;
+    
 }
