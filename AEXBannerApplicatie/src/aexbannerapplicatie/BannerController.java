@@ -5,6 +5,7 @@
  */
 package aexbannerapplicatie;
 
+import java.net.InetAddress;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -28,6 +29,7 @@ public class BannerController extends Application {
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs;
 
+    
     @Override
     public void start(Stage primaryStage) throws RemoteException {
         banner = new AEXBanner();
@@ -47,7 +49,7 @@ public class BannerController extends Application {
                     public void run() {
                         String koers = "";
                         try {
-                            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
+                            Registry registry = LocateRegistry.getRegistry("145.93.35.124", 1099);
                             IEffectenbeurs mockeffectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
                             effectenbeurs = mockeffectenbeurs;
                             for (IFonds i : effectenbeurs.getKoersen()) {
