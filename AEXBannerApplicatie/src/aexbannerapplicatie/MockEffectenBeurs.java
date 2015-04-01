@@ -12,10 +12,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 
 /**
- *
  * @author Jelle
  */
 public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
@@ -27,14 +28,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
      * @throws java.rmi.RemoteException
      */
     public MockEffectenBeurs() throws RemoteException {
-        try {
-            Registry registry = LocateRegistry.createRegistry(1099);
-            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
-            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
-
-        } catch (RemoteException ex) {
-
-        }
         koersenTimer();
     }
 
@@ -53,7 +46,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             }
         };
 
-        koersenTimer.scheduleAtFixedRate(task, 0, 12000);
+        koersenTimer.scheduleAtFixedRate(task, 0, 18000);
     }
 
     public IFonds[] generateKoersen() {
@@ -81,5 +74,17 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             generateKoers();
         }
         return koers;
+    }
+
+    public static void main(String[] arg) {
+       //JFXPanel fxPanel = new JFXPanel(); MockEffectenBeurs in een nieuw project!
+        try {
+            Registry registry = LocateRegistry.createRegistry(1099);
+            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
+            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
+
+        } catch (RemoteException ex) {
+          System.out.println("Error");
+        }
     }
 }
