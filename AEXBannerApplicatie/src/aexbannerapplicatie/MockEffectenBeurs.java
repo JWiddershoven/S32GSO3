@@ -77,7 +77,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     }
 
     public static void main(String[] arg) {
-       //JFXPanel fxPanel = new JFXPanel(); MockEffectenBeurs in een nieuw project!
+       JFXPanel fxPanel = new JFXPanel(); //MockEffectenBeurs in een nieuw project!
         try {
             Registry registry = LocateRegistry.createRegistry(1099);
             IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
