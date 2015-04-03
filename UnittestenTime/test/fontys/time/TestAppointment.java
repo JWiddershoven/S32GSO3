@@ -5,10 +5,6 @@
  */
 package fontys.time;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,8 +16,6 @@ public class TestAppointment {
     
      /**
      * Er wordt een nieuwe appointment gecreëerd met een subject en timeSpan.
-     * @param subject het onderwerp van een afspraak, mag een lege string zijn.
-     * @param timeSpan de timeSpan van een afspraak.
      */
     @Test
     public void testAppointment()

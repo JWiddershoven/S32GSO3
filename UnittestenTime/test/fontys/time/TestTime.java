@@ -144,11 +144,41 @@ public class TestTime {
         } catch (IllegalArgumentException exc) {
 
         }
+
+        try {
+            ITime time = new Time(2015, 4, 3, 14, 02);
+            time = time.plus(58);
+            assertEquals(15, time.getHours());
+        } catch (IllegalArgumentException exc) {
+
+        }
+
+        try {
+            ITime time = new Time(2015, 3, 31, 23, 59);
+            time = time.plus(1);
+            assertEquals(4, time.getMonth());
+        } catch (IllegalArgumentException exc) {
+
+        }
+
+        try {
+            ITime time = new Time(2015, 12, 31, 23, 59);
+            time = time.plus(1);
+            assertEquals(2016, time.getYear());
+        } catch (IllegalArgumentException exc) {
+
+        }
+
+        try {
+            ITime time = new Time(2015, 3, 3, 14, 02);
+            assertEquals(DayInWeek.FRI, time.getDayInWeek()); //Maand begint bij 0.
+        } catch (IllegalArgumentException exc) {
+
+        }
     }
 
     @Test
-    public void testCompareTo()
-    {
+    public void testCompareTo() {
         try {
             Time t1 = new Time(2015, 3, 18, 19, 25);
             Time t2 = new Time(2015, 3, 18, 19, 26);
@@ -157,7 +187,7 @@ public class TestTime {
         } catch (IllegalArgumentException exc) {
             fail("t1 moet groter zijn dan t2");
         }
-        
+
         try {
             Time t1 = new Time(2015, 3, 18, 19, 25);
             Time t2 = new Time(2015, 3, 18, 19, 25);
@@ -166,7 +196,7 @@ public class TestTime {
         } catch (IllegalArgumentException exc) {
             fail("t1 moet gelijk zijn aan t2");
         }
-        
+
         try {
             Time t1 = new Time(2015, 3, 18, 19, 26);
             Time t2 = new Time(2015, 3, 18, 19, 25);
