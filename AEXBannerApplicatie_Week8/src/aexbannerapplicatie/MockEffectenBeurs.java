@@ -19,7 +19,7 @@ import javafx.embed.swing.JFXPanel;
 /**
  * @author Jelle
  */
-public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs, Publisher {
+public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
 
     private IFonds[] fondsen;
 
@@ -86,20 +86,5 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         } catch (RemoteException ex) {
           System.out.println("Error");
         }
-    }
-
-    @Override
-    public void addListener(RemotePropertyListener listener, String property) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeListener(RemotePropertyListener listener, String property) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeAllListeners() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
