@@ -36,7 +36,7 @@ public class BannerController extends Application {
         //BannerController:
         banner.start(primaryStage);
         try {
-            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
+            Registry registry = LocateRegistry.getRegistry("145.93.33.221", 1099);
             effectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,17 +52,12 @@ public class BannerController extends Application {
                     public void run() {
                         String koers = "";
                         try {
-                            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
-                            IEffectenbeurs mockeffectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
-                            effectenbeurs = mockeffectenbeurs;
                             for (IFonds i : effectenbeurs.getKoersen()) {
                                 koers += i.getNaam() + " " + i.getKoers() + " ";
                             }
                             banner.setKoersen(koers);
                         } catch (RemoteException ex) {
 
-                        } catch (NotBoundException ex) {
-                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     }
