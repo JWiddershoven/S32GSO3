@@ -59,7 +59,6 @@ public class BannerController extends Application {
                         } catch (RemoteException ex) {
 
                         }
-
                     }
                 });
             }
