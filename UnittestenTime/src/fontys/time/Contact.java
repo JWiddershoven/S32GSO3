@@ -46,6 +46,16 @@ public class Contact {
      * false.
      */
     protected boolean addAppointment(Appointment a) {
+        
+        if (a != null) {
+            while (this.appointments().hasNext()) {
+                ITimeSpan ts = this.appointments().next().getTimeSpan().unionWith(a.getTimeSpan());              
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+        
+        
         if (a != null) {
             if (agenda.contains(a)) {
                 return false;
