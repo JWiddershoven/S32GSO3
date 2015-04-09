@@ -16,59 +16,89 @@ import static org.junit.Assert.*;
  *
  * @author Jelle
  */
-public class TestContact {
+public class TestContact
+{
 
     @Test
-    public void testContact() {
+    public void testContact()
+    {
         /**
          * Er wordt een nieuw contact gecreëerd met een naam. Dit contact krijgt
          * een nieuwe, lege agenda.
          */
 
         // @param name naam mag geen lege string zijn.
-        try {
+        try
+        {
             Contact con = new Contact("Jelle");
             assertEquals("Jelle", con.getName());
-        } catch (IllegalArgumentException exc) {
+        }
+        catch (IllegalArgumentException exc)
+        {
 
         }
 
-        try {
+        try
+        {
             Contact con = new Contact("");
             fail("Naam mag geen lege string zijn.");
-        } catch (IllegalArgumentException exc) {
+        }
+        catch (IllegalArgumentException exc)
+        {
 
         }
     }
 
     @Test
-    public void testAddAppointment() {
+    public void testAddAppointment()
+    {
 
         Appointment a = new Appointment("vergadering", new TimeSpan(new Time(2015, 3, 22, 18, 38), new Time(2015, 3, 22, 19, 00)));
         Contact con = new Contact("Jelle");
 
-        try {
+        try
+        {
             boolean result = con.addAppointment(a);
             assertEquals(true, result);
-        } catch (IllegalArgumentException exc) {
+        }
+        catch (IllegalArgumentException exc)
+        {
 
         }
 
-        try {
+        try
+        {
+            boolean result = con.addAppointment(a);
+            assertEquals(false, result);
+        }
+        catch (IllegalArgumentException exc)
+        {
+
+        }
+
+        try
+        {
             boolean result = con.addAppointment(null);
             fail("Appointment mag niet null zijn.");
-        } catch (IllegalArgumentException exc) {
+        }
+        catch (IllegalArgumentException exc)
+        {
 
         }
+
     }
 
     @Test
-    public void testRemoveAppointment() {
-        try {
+    public void testRemoveAppointment()
+    {
+        try
+        {
             Appointment a = new Appointment("vergadering2", new TimeSpan(new Time(2015, 3, 23, 15, 00), new Time(2015, 3, 23, 16, 00)));
             Contact con = new Contact("Jelle");
             con.removeAppointment(a);
-        } catch (IllegalArgumentException exc) {
+        }
+        catch (IllegalArgumentException exc)
+        {
 
         }
     }

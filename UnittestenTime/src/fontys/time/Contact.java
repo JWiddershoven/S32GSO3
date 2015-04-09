@@ -12,7 +12,8 @@ import java.util.Iterator;
  *
  * @author Jelle
  */
-public class Contact {
+public class Contact
+{
 
     private String name;
     private ArrayList<Appointment> agenda;
@@ -23,8 +24,10 @@ public class Contact {
      *
      * @param name naam mag geen lege string zijn.
      */
-    public Contact(String name) {
-        if (name.equals("")) {
+    public Contact(String name)
+    {
+        if (name.equals(""))
+        {
             throw new IllegalArgumentException("Naam mag geen lege string zijn.");
         }
         this.name = name;
@@ -34,38 +37,52 @@ public class Contact {
     /**
      * @return de naam van dit contact
      */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
     /**
-     * Er wordt een appointment toegevoegd aan de agenda van het contact indien deze niet overlapt met een ander appointment.
+     * Er wordt een appointment toegevoegd aan de agenda van het contact indien
+     * deze niet overlapt met een ander appointment.
      *
      * @param a appointment moet een subject en TimeSpan bevatten.
      * @return true indien de Appointment is toegevoegd aan de agenda, anders
      * false.
      */
-    protected boolean addAppointment(Appointment a) {
-        
-        if (a != null) {
-            while (this.appointments().hasNext()) {
-                ITimeSpan ts = this.appointments().next().getTimeSpan().unionWith(a.getTimeSpan());              
-            }
-        } else {
-            throw new IllegalArgumentException();
-        }
-        
-        
-        if (a != null) {
-            if (agenda.contains(a)) {
-                return false;
-            } else {
+    protected boolean addAppointment(Appointment a)
+    {
+
+        boolean isAdded = false;
+        if (a != null)
+        {
+            if (agenda.isEmpty())
+            {
                 agenda.add(a);
-                return true;
+                isAdded = true;
             }
-        } else {
+            else
+            {
+                for (Appointment app : agenda)
+                {
+                    if (app.getTimeSpan().isPartOf(a.getTimeSpan()))
+                    {
+                        isAdded = false;
+                    }
+                    else
+                    {
+                        agenda.add(a);
+                        isAdded = true;
+                    }
+                }
+            }
+        }
+        else
+        {
             throw new IllegalArgumentException();
         }
+
+        return isAdded;
     }
 
     /**
@@ -74,8 +91,10 @@ public class Contact {
      *
      * @param a appointment moet voorkomen in de agenda van het contact.
      */
-    protected void removeAppointment(Appointment a) {
-        if (agenda.contains(a)) {
+    protected void removeAppointment(Appointment a)
+    {
+        if (agenda.contains(a))
+        {
             agenda.remove(a);
         }
     }
@@ -83,7 +102,8 @@ public class Contact {
     /**
      * @return een Iterator met appointments van het contact.
      */
-    public Iterator<Appointment> appointments() {
+    public Iterator<Appointment> appointments()
+    {
         Iterator itr = agenda.iterator();
         return itr;
     }

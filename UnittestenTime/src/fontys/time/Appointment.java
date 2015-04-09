@@ -12,7 +12,8 @@ import java.util.Iterator;
  *
  * @author Jelle
  */
-public class Appointment {
+public class Appointment
+{
 
     private String subject;
     private ITimeSpan timeSpan;
@@ -24,7 +25,8 @@ public class Appointment {
      * @param subject het onderwerp van een afspraak, mag een lege string zijn.
      * @param timeSpan de timeSpan van een afspraak.
      */
-    public Appointment(String subject, ITimeSpan timeSpan) {
+    public Appointment(String subject, ITimeSpan timeSpan)
+    {
         this.subject = subject;
         this.timeSpan = timeSpan;
         invitees = new ArrayList<>();
@@ -33,21 +35,24 @@ public class Appointment {
     /**
      * @return het subject van een appointment.
      */
-    public String getSubject() {
+    public String getSubject()
+    {
         return this.subject;
     }
 
     /**
      * @return de timeSpan van een appointment.
      */
-    public ITimeSpan getTimeSpan() {
+    public ITimeSpan getTimeSpan()
+    {
         return this.timeSpan;
     }
 
     /**
      * @return een Iterator met alle genodigden van een appointment.
      */
-    public Iterator<Contact> invitees() {
+    public Iterator<Contact> invitees()
+    {
         Iterator itr = invitees.iterator();
         return itr;
     }
@@ -57,16 +62,34 @@ public class Appointment {
      * @return true indien het contact is toegevoegd aan de appointment, anders
      * false.
      */
-    public boolean addContact(Contact c) {
-        if (c != null) {
-            while (c.appointments().hasNext()) {
-                if (c.appointments().next().timeSpan.isPartOf(timeSpan)) {
-                    return false;
-                }
+    public boolean addContact(Contact c)
+    {
+        boolean isAdded = false;
+        if (c != null)
+        {
+            if (!c.appointments().hasNext())
+            {
+                invitees.add(c);
+                isAdded = true;
             }
-            invitees.add(c);
-            return true;
-        } else {
+            while (c.appointments().hasNext())
+            {
+                if (c.appointments().next().getTimeSpan().isPartOf(timeSpan))
+                {
+                    isAdded = false;
+                }
+                else
+                {
+                    invitees.add(c);
+                    isAdded = true;
+                }
+                        
+            }
+            
+            return isAdded;
+        }
+        else
+        {
             throw new IllegalArgumentException();
         }
 
@@ -75,12 +98,17 @@ public class Appointment {
     /**
      * @param c het contact dat wordt verwijderd uit de appointment.
      */
-    public void removeContact(Contact c) {
-        if (c != null) {
-            if (invitees.contains(c)) {
+    public void removeContact(Contact c)
+    {
+        if (c != null)
+        {
+            if (invitees.contains(c))
+            {
                 invitees.remove(c);
             }
-        } else {
+        }
+        else
+        {
             throw new IllegalArgumentException();
         }
     }
