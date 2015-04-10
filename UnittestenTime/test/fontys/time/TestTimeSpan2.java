@@ -252,6 +252,19 @@ public class TestTimeSpan2 {
    
    @Test public void testUnionWith()
    {
+       try
+       {
+           ITimeSpan ts = new TimeSpan(new Time(2015, 4, 10, 10, 50), new Time(2015, 4, 10, 10, 55));
+           ITimeSpan ts2 = new TimeSpan(new Time(2015, 4, 10, 10, 51), new Time(2015, 4, 10, 11, 00));
+           assertEquals(ts, ts.unionWith(ts2));
+       } catch (IllegalArgumentException exc)
+       {
+           
+       }
+   }
+   
+   @Test public void testInterscetionWith()
+   {
        
    }
     
