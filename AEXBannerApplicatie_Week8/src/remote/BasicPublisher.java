@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package remote;
 
 import java.util.*;
 import java.beans.*;

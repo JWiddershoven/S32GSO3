@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package remote;
+
+import java.rmi.Remote;
+import remote.RemotePropertyListener;
 
 /**
  *
  * @author Jordy
  */
-public interface Publisher {
+public interface Publisher extends Remote {
     
     
   /**

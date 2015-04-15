@@ -6,11 +6,12 @@
 package aexbannerapplicatie;
 
 import java.rmi.*;
+import remote.Publisher;
 /**
  *
  * @author Jelle
  */
-public interface IEffectenbeurs extends Remote {
+public interface IEffectenbeurs extends Publisher {
     
     /**
      * @return De fondsen.

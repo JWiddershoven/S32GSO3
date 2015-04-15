@@ -5,11 +5,13 @@
  */
 package aexbannerapplicatie;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jelle
  */
-public interface IFonds {
+public interface IFonds extends Serializable {
     
     /**
      * @return De naam van het fonds.

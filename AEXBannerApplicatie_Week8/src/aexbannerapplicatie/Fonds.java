@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Jelle
  */
-public class Fonds implements IFonds, Serializable{
+public class Fonds implements IFonds {
 
     private String naam;
     private double koers;

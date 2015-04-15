@@ -5,6 +5,7 @@
  */
 package aexbannerapplicatie;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -18,12 +19,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import remote.RemotePropertyListener;
 
 /**
  *
  * @author Jelle
  */
-public class BannerController extends Application {
+public class BannerController extends Application implements RemotePropertyListener {
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs;
@@ -35,12 +37,6 @@ public class BannerController extends Application {
         //primaryStage acts as the common stage of the AEXBanner and the 
         //BannerController:
         banner.start(primaryStage);
-        try {
-            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
-            effectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         //create a timer which polls every 2 seconds
         Timer pollingTimer = new Timer();
         TimerTask task = new TimerTask() {
@@ -53,8 +49,8 @@ public class BannerController extends Application {
                         String koers = "";
                         try {
                             Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
-                            IEffectenbeurs mockeffectenbeurs = (IEffectenbeurs) registry.lookup("Mockeffectenbeurs");
-                            effectenbeurs = mockeffectenbeurs;
+                            IEffectenbeurs fondsen = (IEffectenbeurs) registry.lookup("Fondsen");
+                            effectenbeurs = fondsen;
                             for (IFonds i : effectenbeurs.getKoersen()) {
                                 koers += i.getNaam() + " " + i.getKoers() + " ";
                             }
@@ -85,6 +81,12 @@ public class BannerController extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException
+    {
+        
     }
 
 }

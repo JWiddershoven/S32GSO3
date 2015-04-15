@@ -15,6 +15,7 @@ import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import remote.RemotePropertyListener;
 
 /**
  * @author Jelle
@@ -80,11 +81,29 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
        JFXPanel fxPanel = new JFXPanel(); //MockEffectenBeurs in een nieuw project!
         try {
             Registry registry = LocateRegistry.createRegistry(1099);
-            IEffectenbeurs mockeffectenbeurs = new MockEffectenBeurs();
-            registry.rebind("Mockeffectenbeurs", mockeffectenbeurs);
+            IEffectenbeurs fondsen = new MockEffectenBeurs();
+            registry.rebind("Fondsen", fondsen);
 
         } catch (RemoteException ex) {
           System.out.println("Error");
         }
+    }
+
+    @Override
+    public void addListener(RemotePropertyListener listener, String property)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeListener(RemotePropertyListener listener, String property)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeAllListeners()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
