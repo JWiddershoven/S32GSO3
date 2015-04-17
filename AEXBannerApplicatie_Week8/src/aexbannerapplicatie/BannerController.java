@@ -8,9 +8,11 @@ package aexbannerapplicatie;
 import java.beans.PropertyChangeEvent;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -33,6 +35,14 @@ public class BannerController extends Application implements RemotePropertyListe
     @Override
     public void start(Stage primaryStage) {
         banner = new AEXBanner();
+        try
+        {
+            UnicastRemoteObject.exportObject((Remote) this);
+        }
+        catch (RemoteException ex)
+        {
+            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         //primaryStage acts as the common stage of the AEXBanner and the 
         //BannerController:

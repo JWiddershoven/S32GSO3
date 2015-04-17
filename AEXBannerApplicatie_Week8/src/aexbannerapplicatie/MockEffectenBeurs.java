@@ -15,6 +15,7 @@ import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import remote.Publisher;
 import remote.RemotePropertyListener;
 
 /**
