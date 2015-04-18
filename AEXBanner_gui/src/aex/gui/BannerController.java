@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package aex.gui;
 
 import aex.shared.IFonds;
 import aex.shared.IEffectenbeurs;
@@ -60,7 +60,7 @@ public class BannerController extends Application implements RemotePropertyListe
                     public void run() {
                         String koers = "";
                         try {
-                            Registry registry = LocateRegistry.getRegistry("145.93.100.14", 1099);
+                            Registry registry = LocateRegistry.getRegistry("192.168.192.64", 1099);
                             IEffectenbeurs fondsen = (IEffectenbeurs) registry.lookup("Fondsen");
                             effectenbeurs = fondsen;
                             for (IFonds i : effectenbeurs.getKoersen()) {
@@ -72,7 +72,6 @@ public class BannerController extends Application implements RemotePropertyListe
                         } catch (NotBoundException ex) {
                             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
                     }
                 });
             }

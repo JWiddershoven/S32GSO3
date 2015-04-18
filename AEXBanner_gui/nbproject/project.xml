@@ -13,7 +13,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>AEXBannerApplicatie_Week8</name>
+            <name>AEXBanner_gui</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

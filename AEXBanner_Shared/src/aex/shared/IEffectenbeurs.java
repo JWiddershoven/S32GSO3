@@ -7,12 +7,13 @@ package aex.shared;
 
 import aex.shared.IFonds;
 import fontys.observer.RemotePublisher;
+import java.io.Serializable;
 import java.rmi.*;
 /**
  *
  * @author Jelle
  */
-public interface IEffectenbeurs extends RemotePublisher {
+public interface IEffectenbeurs extends RemotePublisher, Serializable {
     
     /**
      * @return De fondsen.
