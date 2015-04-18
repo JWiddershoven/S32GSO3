@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package aex.shared;
 
+import aex.shared.IFonds;
 import java.io.Serializable;
 
 /**

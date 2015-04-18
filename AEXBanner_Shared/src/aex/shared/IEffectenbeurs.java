@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package aex.shared;
 
+import aex.shared.IFonds;
+import fontys.observer.RemotePublisher;
 import java.rmi.*;
-import remote.Publisher;
 /**
  *
  * @author Jelle
  */
-public interface IEffectenbeurs extends Publisher {
+public interface IEffectenbeurs extends RemotePublisher {
     
     /**
      * @return De fondsen.

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aexbannerapplicatie;
+package aex.beurs;
 
+import aex.shared.Fonds;
+import aex.shared.IEffectenbeurs;
+import aex.shared.IFonds;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,8 +18,8 @@ import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import remote.Publisher;
-import remote.RemotePropertyListener;
+import fontys.observer.BasicPublisher;
+import fontys.observer.RemotePropertyListener;
 
 /**
  * @author Jelle
@@ -24,6 +27,7 @@ import remote.RemotePropertyListener;
 public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
 
     private IFonds[] fondsen;
+    private BasicPublisher bp;
 
     /**
      *
@@ -31,6 +35,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
      */
     public MockEffectenBeurs() throws RemoteException {
         koersenTimer();
+        bp = new BasicPublisher(new String[] {"Fondsen"});
     }
 
     public void koersenTimer() {
@@ -61,7 +66,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         return fondsen;
     }
 
-    @Override
     public IFonds[] getKoersen() throws RemoteException {
 
         return this.fondsen;
@@ -90,21 +94,18 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         }
     }
 
-    @Override
     public void addListener(RemotePropertyListener listener, String property)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bp.addListener(listener, property);
     }
 
-    @Override
     public void removeListener(RemotePropertyListener listener, String property)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bp.removeListener(listener, property);
     }
 
-    @Override
     public void removeAllListeners()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }

@@ -5,6 +5,8 @@
  */
 package aexbannerapplicatie;
 
+import aex.shared.IFonds;
+import aex.shared.IEffectenbeurs;
 import java.beans.PropertyChangeEvent;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -21,7 +23,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import remote.RemotePropertyListener;
+import fontys.observer.RemotePropertyListener;
 
 /**
  *
