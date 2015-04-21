@@ -29,19 +29,29 @@ import fontys.observer.RemotePropertyListener;
  *
  * @author Jelle
  */
-public class BannerController extends Application implements RemotePropertyListener {
+public class BannerController extends Application implements RemotePropertyListener
+{
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException
+    {
         banner = new AEXBanner();
+        effectenbeurs.addListener(this, null);
         try
         {
-            UnicastRemoteObject.exportObject((Remote) this);
+            UnicastRemoteObject.exportObject(this, 0);
+        } catch (RemoteException ex)
+        {
+            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (RemoteException ex)
+        Registry registry = LocateRegistry.getRegistry("192.168.192.64", 1099);
+        try
+        {
+            effectenbeurs = (IEffectenbeurs) registry.lookup("Beurs");
+        } catch (NotBoundException | AccessException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,36 +61,33 @@ public class BannerController extends Application implements RemotePropertyListe
         banner.start(primaryStage);
         //create a timer which polls every 2 seconds
         Timer pollingTimer = new Timer();
-        TimerTask task = new TimerTask() {
+        TimerTask task = new TimerTask()
+        {
 
             @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        String koers = "";
-                        try {
-                            Registry registry = LocateRegistry.getRegistry("192.168.192.64", 1099);
-                            IEffectenbeurs fondsen = (IEffectenbeurs) registry.lookup("Fondsen");
-                            effectenbeurs = fondsen;
-                            for (IFonds i : effectenbeurs.getKoersen()) {
-                                koers += i.getNaam() + " " + i.getKoers() + " ";
-                            }
-                            banner.setKoersen(koers);
-                        } catch (RemoteException ex) {
-
-                        } catch (NotBoundException ex) {
-                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+            public void run()
+            {
+                String koers = "";
+                try
+                {
+                    for (IFonds i : effectenbeurs.getKoersen())
+                    {
+                        koers += i.getNaam() + " " + i.getKoers() + " ";
                     }
-                });
+                    banner.setKoersen(koers);
+                } catch (RemoteException ex)
+                {
+
+                }
+
             }
         };
 
         pollingTimer.scheduleAtFixedRate(task, 0, 2000);
 
         //remove pollingTimer as soon as primaryStage is closing:
-        primaryStage.setOnCloseRequest((WindowEvent we) -> {
+        primaryStage.setOnCloseRequest((WindowEvent we) ->
+        {
             pollingTimer.cancel();
         });
     }
@@ -90,14 +97,15 @@ public class BannerController extends Application implements RemotePropertyListe
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException
     {
-        
+
     }
 
 }

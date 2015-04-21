@@ -35,7 +35,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
      */
     public MockEffectenBeurs() throws RemoteException {
         koersenTimer();
-        bp = new BasicPublisher(new String[] {"Fondsen"});
+        bp = new BasicPublisher(new String[] {"Beurs"});
     }
 
     public void koersenTimer() {
@@ -94,11 +94,13 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         }
     }
 
+    @Override
     public void addListener(RemotePropertyListener listener, String property)
     {
         bp.addListener(listener, property);
     }
 
+    @Override
     public void removeListener(RemotePropertyListener listener, String property)
     {
         bp.removeListener(listener, property);
