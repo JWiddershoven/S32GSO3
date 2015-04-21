@@ -34,12 +34,11 @@ public class BannerController extends Application implements RemotePropertyListe
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs = null;
-    
 
     @Override
     public void start(Stage primaryStage) throws RemoteException
     {
-        
+
         banner = new AEXBanner();
         try
         {
@@ -48,10 +47,10 @@ public class BannerController extends Application implements RemotePropertyListe
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try
         {
-            Registry registry = LocateRegistry.getRegistry("145.93.98.241", 1099);
+            Registry registry = LocateRegistry.getRegistry("145.93.35.3", 1099);
             effectenbeurs = (IEffectenbeurs) registry.lookup("Beurs");
             effectenbeurs.addListener(this, "Beurs");
         } catch (NotBoundException | AccessException ex)
@@ -70,19 +69,25 @@ public class BannerController extends Application implements RemotePropertyListe
             @Override
             public void run()
             {
-                String koers = "";
-                try
+                Platform.runLater(new Runnable()
                 {
-                    for (IFonds i : effectenbeurs.getKoersen())
+                    @Override
+                    public void run()
                     {
-                        koers += i.getNaam() + " " + i.getKoers() + " ";
+                        String koers = "";
+                        try
+                        {
+                            for (IFonds i : effectenbeurs.getKoersen())
+                            {
+                                koers += i.getNaam() + " " + i.getKoers() + " ";
+                            }
+                            banner.setKoersen(koers);
+                        } catch (RemoteException ex)
+                        {
+
+                        }
                     }
-                    banner.setKoersen(koers);
-                } catch (RemoteException ex)
-                {
-
-                }
-
+                });
             }
         };
 
