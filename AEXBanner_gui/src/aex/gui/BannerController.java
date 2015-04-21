@@ -33,13 +33,14 @@ public class BannerController extends Application implements RemotePropertyListe
 {
 
     private AEXBanner banner;
-    private IEffectenbeurs effectenbeurs;
+    private IEffectenbeurs effectenbeurs = null;
+    
 
     @Override
     public void start(Stage primaryStage) throws RemoteException
     {
+        
         banner = new AEXBanner();
-        effectenbeurs.addListener(this, null);
         try
         {
             UnicastRemoteObject.exportObject(this, 0);
@@ -47,10 +48,12 @@ public class BannerController extends Application implements RemotePropertyListe
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Registry registry = LocateRegistry.getRegistry("192.168.192.64", 1099);
+        
         try
         {
+            Registry registry = LocateRegistry.getRegistry("145.93.98.241", 1099);
             effectenbeurs = (IEffectenbeurs) registry.lookup("Beurs");
+            effectenbeurs.addListener(this, "Beurs");
         } catch (NotBoundException | AccessException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
