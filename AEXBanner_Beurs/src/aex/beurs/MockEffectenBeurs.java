@@ -24,7 +24,8 @@ import fontys.observer.RemotePropertyListener;
 /**
  * @author Jelle
  */
-public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
+public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs
+{
 
     private IFonds[] fondsen;
     private BasicPublisher bp;
@@ -33,20 +34,29 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
      *
      * @throws java.rmi.RemoteException
      */
-    public MockEffectenBeurs() throws RemoteException {
+    public MockEffectenBeurs() throws RemoteException
+    {
         koersenTimer();
-        bp = new BasicPublisher(new String[] {"Beurs"});
+        bp = new BasicPublisher(new String[]
+        {
+            "Beurs"
+        });
     }
 
-    public void koersenTimer() {
+    public void koersenTimer()
+    {
         Timer koersenTimer = new Timer();
-        TimerTask task = new TimerTask() {
+        TimerTask task = new TimerTask()
+        {
 
             @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
+            public void run()
+            {
+                Platform.runLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         generateKoersen();
                     }
                 });
@@ -56,7 +66,8 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         koersenTimer.scheduleAtFixedRate(task, 0, 18000);
     }
 
-    public IFonds[] generateKoersen() {
+    public IFonds[] generateKoersen()
+    {
         fondsen = new IFonds[5];
         fondsen[0] = new Fonds("Microsoft", generateKoers());
         fondsen[1] = new Fonds("Apple", generateKoers());
@@ -66,31 +77,38 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         return fondsen;
     }
 
-    public IFonds[] getKoersen() throws RemoteException {
+    @Override
+    public IFonds[] getKoersen() throws RemoteException
+    {
 
         return this.fondsen;
     }
 
-    public double generateKoers() {
+    public double generateKoers()
+    {
         Random r = new Random();
         double koers = r.nextInt(101) + r.nextDouble();
         koers = Math.round(koers * 10);
         koers = koers / 10;
-        if (koers < 10) {
+        if (koers < 10)
+        {
             generateKoers();
         }
         return koers;
     }
 
-    public static void main(String[] arg) {
-       JFXPanel fxPanel = new JFXPanel(); //MockEffectenBeurs in een nieuw project!
-        try {
+    public static void main(String[] arg)
+    {
+        JFXPanel fxPanel = new JFXPanel(); //MockEffectenBeurs in een nieuw project!
+        try
+        {
             Registry registry = LocateRegistry.createRegistry(1099);
-            IEffectenbeurs fondsen = new MockEffectenBeurs();
-            registry.rebind("Fondsen", fondsen);
+            IEffectenbeurs beurs = new MockEffectenBeurs();
+            registry.rebind("Beurs", beurs);
 
-        } catch (RemoteException ex) {
-          System.out.println("Error");
+        } catch (RemoteException ex)
+        {
+            System.out.println("Error");
         }
     }
 
@@ -108,6 +126,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public void removeAllListeners()
     {
-        
+
     }
 }
