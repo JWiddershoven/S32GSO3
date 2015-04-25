@@ -6,12 +6,13 @@
 package aex.shared;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 
 /**
  *
  * @author Jelle
  */
-public interface IFonds extends Serializable {
+public interface IFonds extends Remote {
     
     /**
      * @return De naam van het fonds.

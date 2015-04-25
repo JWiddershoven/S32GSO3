@@ -24,6 +24,8 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import fontys.observer.RemotePropertyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,6 +36,7 @@ public class BannerController extends Application implements RemotePropertyListe
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs = null;
+    private List<IFonds> fondsen = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws RemoteException
@@ -43,17 +46,19 @@ public class BannerController extends Application implements RemotePropertyListe
         try
         {
             UnicastRemoteObject.exportObject(this, 0);
-        } catch (RemoteException ex)
+        }
+        catch (RemoteException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try
         {
-            Registry registry = LocateRegistry.getRegistry("145.93.35.3", 1099);
-            effectenbeurs = (IEffectenbeurs) registry.lookup("Beurs");
-            effectenbeurs.addListener(this, "Beurs");
-        } catch (NotBoundException | AccessException ex)
+            Registry registry = LocateRegistry.getRegistry("192.168.2.5", 1099);
+            fondsen = (List<IFonds>) registry.lookup("Fondsen");
+            effectenbeurs.addListener(this, "Fondsen");
+        }
+        catch (NotBoundException | AccessException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,42 +67,43 @@ public class BannerController extends Application implements RemotePropertyListe
         //BannerController:
         banner.start(primaryStage);
         //create a timer which polls every 2 seconds
-        Timer pollingTimer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-
-            @Override
-            public void run()
-            {
-                Platform.runLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        String koers = "";
-                        try
-                        {
-                            for (IFonds i : effectenbeurs.getKoersen())
-                            {
-                                koers += i.getNaam() + " " + i.getKoers() + " ";
-                            }
-                            banner.setKoersen(koers);
-                        } catch (RemoteException ex)
-                        {
-
-                        }
-                    }
-                });
-            }
-        };
-
-        pollingTimer.scheduleAtFixedRate(task, 0, 2000);
-
-        //remove pollingTimer as soon as primaryStage is closing:
-        primaryStage.setOnCloseRequest((WindowEvent we) ->
-        {
-            pollingTimer.cancel();
-        });
+//        Timer pollingTimer = new Timer();
+//        TimerTask task = new TimerTask()
+//        {
+//
+//            @Override
+//            public void run()
+//            {
+//                Platform.runLater(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//                        String koers = "";
+//                        try
+//                        {
+//                            for (IFonds i : effectenbeurs.getKoersen())
+//                            {
+//                                koers += i.getNaam() + " " + i.getKoers() + " ";
+//                            }
+//                            banner.setKoersen(koers);
+//                        }
+//                        catch (RemoteException ex)
+//                        {
+//
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//
+//        pollingTimer.scheduleAtFixedRate(task, 0, 2000);
+//
+//        //remove pollingTimer as soon as primaryStage is closing:
+//        primaryStage.setOnCloseRequest((WindowEvent we) ->
+//        {
+//            pollingTimer.cancel();
+//        });
     }
 
     /**
@@ -113,7 +119,7 @@ public class BannerController extends Application implements RemotePropertyListe
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException
     {
-
+        banner.setKoersen(evt.getNewValue().toString());
     }
 
 }

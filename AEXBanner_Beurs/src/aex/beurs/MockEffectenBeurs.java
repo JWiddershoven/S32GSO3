@@ -20,6 +20,11 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
+import java.rmi.Remote;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Jelle
@@ -27,7 +32,7 @@ import fontys.observer.RemotePropertyListener;
 public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs
 {
 
-    private IFonds[] fondsen;
+    private static List<IFonds> fondsen;
     private BasicPublisher bp;
 
     /**
@@ -57,7 +62,14 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                     @Override
                     public void run()
                     {
-                        generateKoersen();
+                        try
+                        {
+                            generateKoersen();
+                        }
+                        catch (RemoteException ex)
+                        {
+                            Logger.getLogger(MockEffectenBeurs.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
             }
@@ -66,22 +78,21 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         koersenTimer.scheduleAtFixedRate(task, 0, 18000);
     }
 
-    public IFonds[] generateKoersen()
+    public List<IFonds> generateKoersen() throws RemoteException
     {
-        fondsen = new IFonds[5];
-        fondsen[0] = new Fonds("Microsoft", generateKoers());
-        fondsen[1] = new Fonds("Apple", generateKoers());
-        fondsen[2] = new Fonds("Google", generateKoers());
-        fondsen[3] = new Fonds("Nokia", generateKoers());
-        fondsen[4] = new Fonds("Yahoo", generateKoers());
+        fondsen = new ArrayList<>();
+        fondsen.add(new Fonds("Microsoft", generateKoers()));
+        fondsen.add(new Fonds("Apple", generateKoers()));
+        fondsen.add(new Fonds("Google", generateKoers()));
+        fondsen.add(new Fonds("Nokia", generateKoers()));
+        fondsen.add(new Fonds("Yahoo", generateKoers()));
         return fondsen;
     }
 
     @Override
-    public IFonds[] getKoersen() throws RemoteException
+    public List<IFonds> getKoersen() throws RemoteException
     {
-
-        return this.fondsen;
+        return fondsen;
     }
 
     public double generateKoers()
@@ -103,8 +114,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         try
         {
             Registry registry = LocateRegistry.createRegistry(1099);
-            IEffectenbeurs beurs = new MockEffectenBeurs();
-            registry.rebind("Beurs", beurs);
+            registry.rebind("Fondsen", (Remote) fondsen);
 
         } catch (RemoteException ex)
         {
