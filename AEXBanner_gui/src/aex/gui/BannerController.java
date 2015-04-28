@@ -35,7 +35,6 @@ public class BannerController extends Application implements RemotePropertyListe
     @Override
     public void start(Stage primaryStage) throws RemoteException
     {
-
         banner = new AEXBanner();
         
         try
@@ -57,7 +56,6 @@ public class BannerController extends Application implements RemotePropertyListe
         }
 
         banner.start(primaryStage);
-
     }
 
     /**
@@ -76,7 +74,7 @@ public class BannerController extends Application implements RemotePropertyListe
         String koersen = "";
         for (IFonds fond : (List<IFonds>) evt.getNewValue())
         {
-            koersen = koersen + " " + fond.getKoers();
+            koersen = koersen + " " + fond.getNaam() + " " + fond.getKoers();
         }
         System.out.println(koersen);
         banner.setKoersen(koersen);

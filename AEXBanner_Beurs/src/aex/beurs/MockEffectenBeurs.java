@@ -119,7 +119,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             }
 
             IEffectenbeurs beurs = new MockEffectenBeurs();
-            System.setProperty("java.rmi.server.hostname", "localhost");
+            //System.setProperty("java.rmi.server.hostname", "localhost");
             registry.rebind("beurs", beurs);
 
         }
