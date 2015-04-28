@@ -66,6 +66,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                         try
                         {
                             generateKoersen();
+                            bp.inform(this, null, null, fondsen);
                         }
                         catch (RemoteException ex)
                         {
