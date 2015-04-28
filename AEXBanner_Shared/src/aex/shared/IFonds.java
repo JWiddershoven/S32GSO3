@@ -12,7 +12,7 @@ import java.rmi.Remote;
  *
  * @author Jelle
  */
-public interface IFonds extends Remote {
+public interface IFonds extends Serializable {
     
     /**
      * @return De naam van het fonds.

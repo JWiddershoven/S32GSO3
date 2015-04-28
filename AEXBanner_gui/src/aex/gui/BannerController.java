@@ -36,7 +36,7 @@ public class BannerController extends Application implements RemotePropertyListe
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs = null;
-    private List<IFonds> fondsen = new ArrayList<>();
+ 
 
     @Override
     public void start(Stage primaryStage) throws RemoteException
@@ -54,8 +54,8 @@ public class BannerController extends Application implements RemotePropertyListe
 
         try
         {
-            Registry registry = LocateRegistry.getRegistry("192.168.2.5", 1099);
-            fondsen = (List<IFonds>) registry.lookup("Fondsen");
+            Registry registry = LocateRegistry.getRegistry("145.93.97.40", 1099);
+            effectenbeurs =  (IEffectenbeurs) registry.lookup("beurs");
             effectenbeurs.addListener(this, "Fondsen");
         }
         catch (NotBoundException | AccessException ex)

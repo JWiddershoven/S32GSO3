@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.Stage;
 
 /**
  * @author Jelle
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs
 {
 
-    private static List<IFonds> fondsen;
+    private List<IFonds> fondsen;
     private BasicPublisher bp;
 
     /**
@@ -44,7 +45,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         koersenTimer();
         bp = new BasicPublisher(new String[]
         {
-            "Beurs"
+            "Fondsen"
         });
     }
 
@@ -110,11 +111,12 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public static void main(String[] arg)
     {
-        JFXPanel fxPanel = new JFXPanel(); //MockEffectenBeurs in een nieuw project!
+        JFXPanel fxPanel = new JFXPanel();
         try
         {
             Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("Fondsen", (Remote) fondsen);
+            IEffectenbeurs beurs = new MockEffectenBeurs();
+            registry.rebind("beurs", beurs);
 
         } catch (RemoteException ex)
         {
@@ -136,6 +138,12 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public void removeAllListeners()
     {
+        
+    }
 
+   
+    public void start(Stage primaryStage) throws Exception
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
