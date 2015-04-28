@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs
 {
 
-    private List<IFonds> fondsen;
+    private ArrayList<IFonds> fondsen;
     private BasicPublisher bp;
 
     /**
@@ -66,7 +66,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                         try
                         {
                             generateKoersen();
-                            bp.inform(this, null, null, fondsen);
                         }
                         catch (RemoteException ex)
                         {
@@ -92,7 +91,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     }
 
     @Override
-    public List<IFonds> getKoersen() throws RemoteException
+    public ArrayList<IFonds> getKoersen() throws RemoteException
     {
         return fondsen;
     }
