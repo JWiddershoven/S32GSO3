@@ -57,8 +57,14 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                     public void run() {
                         try {
                             generateKoersen();
+<<<<<<< HEAD
                             bp.inform(this, "Fondsen", null, fondsen);
                         } catch (RemoteException ex) {
+=======
+                        }
+                        catch (RemoteException ex)
+                        {
+>>>>>>> 9fd8aa6366a97109265445ce319214da5427ed95
                             Logger.getLogger(MockEffectenBeurs.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -78,7 +84,18 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         return fondsen;
     }
 
+<<<<<<< HEAD
     public double generateKoers() {
+=======
+    @Override
+    public ArrayList<IFonds> getKoersen() throws RemoteException
+    {
+        return fondsen;
+    }
+
+    public double generateKoers()
+    {
+>>>>>>> 9fd8aa6366a97109265445ce319214da5427ed95
         Random r = new Random();
         double koers = r.nextInt(101) + r.nextDouble();
         koers = Math.round(koers * 10);

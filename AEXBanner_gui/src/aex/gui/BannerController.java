@@ -5,6 +5,7 @@
  */
 package aex.gui;
 
+import aex.shared.Fonds;
 import aex.shared.IFonds;
 import aex.shared.IEffectenbeurs;
 import java.beans.PropertyChangeEvent;
@@ -36,7 +37,6 @@ public class BannerController extends Application implements RemotePropertyListe
 
     private AEXBanner banner;
     private IEffectenbeurs effectenbeurs = null;
- 
 
     @Override
     public void start(Stage primaryStage) throws RemoteException
@@ -46,8 +46,7 @@ public class BannerController extends Application implements RemotePropertyListe
         try
         {
             UnicastRemoteObject.exportObject(this, 0);
-        }
-        catch (RemoteException ex)
+        } catch (RemoteException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,55 +54,21 @@ public class BannerController extends Application implements RemotePropertyListe
         try
         {
             Registry registry = LocateRegistry.getRegistry("145.93.34.47", 1099);
-            effectenbeurs =  (IEffectenbeurs) registry.lookup("beurs");
+            effectenbeurs = (IEffectenbeurs) registry.lookup("beurs");
             effectenbeurs.addListener(this, "Fondsen");
-        }
-        catch (NotBoundException | AccessException ex)
+            String koers = "";
+            for (IFonds fond : effectenbeurs.getKoersen())
+            {
+                koers = koers + fond.getKoers();
+            }
+            banner.setKoersen(koers);
+        } catch (NotBoundException | AccessException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //primaryStage acts as the common stage of the AEXBanner and the 
-        //BannerController:
         banner.start(primaryStage);
-        //create a timer which polls every 2 seconds
-//        Timer pollingTimer = new Timer();
-//        TimerTask task = new TimerTask()
-//        {
-//
-//            @Override
-//            public void run()
-//            {
-//                Platform.runLater(new Runnable()
-//                {
-//                    @Override
-//                    public void run()
-//                    {
-//                        String koers = "";
-//                        try
-//                        {
-//                            for (IFonds i : effectenbeurs.getKoersen())
-//                            {
-//                                koers += i.getNaam() + " " + i.getKoers() + " ";
-//                            }
-//                            banner.setKoersen(koers);
-//                        }
-//                        catch (RemoteException ex)
-//                        {
-//
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//
-//        pollingTimer.scheduleAtFixedRate(task, 0, 2000);
-//
-//        //remove pollingTimer as soon as primaryStage is closing:
-//        primaryStage.setOnCloseRequest((WindowEvent we) ->
-//        {
-//            pollingTimer.cancel();
-//        });
+
     }
 
     /**
@@ -119,7 +84,13 @@ public class BannerController extends Application implements RemotePropertyListe
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException
     {
-        banner.setKoersen(evt.getNewValue().toString());
+        String koers = "";
+        for (IFonds fond : (ArrayList<IFonds>) evt.getNewValue())
+        {
+            koers = koers + fond.getKoers();
+        }
+
+        banner.setKoersen(koers);
     }
 
 }
