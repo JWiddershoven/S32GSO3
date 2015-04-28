@@ -30,58 +30,45 @@ import javafx.stage.Stage;
 /**
  * @author Jelle
  */
-public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs
-{
+public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenbeurs {
 
-    private List<IFonds> fondsen;
+    private ArrayList<IFonds> fondsen;
     private BasicPublisher bp;
 
     /**
      *
      * @throws java.rmi.RemoteException
      */
-    public MockEffectenBeurs() throws RemoteException
-    {
+    public MockEffectenBeurs() throws RemoteException {
         koersenTimer();
-        bp = new BasicPublisher(new String[]
-        {
+        bp = new BasicPublisher(new String[]{
             "Fondsen"
         });
     }
 
-    public void koersenTimer()
-    {
+    public void koersenTimer() {
         Timer koersenTimer = new Timer();
-        TimerTask task = new TimerTask()
-        {
+        TimerTask task = new TimerTask() {
 
             @Override
-            public void run()
-            {
-                Platform.runLater(new Runnable()
-                {
+            public void run() {
+                Platform.runLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        try
-                        {
+                    public void run() {
+                        try {
                             generateKoersen();
-                            bp.inform(this, null, null, fondsen);
-                        }
-                        catch (RemoteException ex)
-                        {
+                            bp.inform(this, "Fondsen", null, fondsen);
+                        } catch (RemoteException ex) {
                             Logger.getLogger(MockEffectenBeurs.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 });
             }
         };
-
-        koersenTimer.scheduleAtFixedRate(task, 0, 18000);
+        koersenTimer.scheduleAtFixedRate(task, 0, 5000);
     }
 
-    public List<IFonds> generateKoersen() throws RemoteException
-    {
+    public List<IFonds> generateKoersen() throws RemoteException {
         fondsen = new ArrayList<>();
         fondsen.add(new Fonds("Microsoft", generateKoers()));
         fondsen.add(new Fonds("Apple", generateKoers()));
@@ -91,60 +78,51 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         return fondsen;
     }
 
-    @Override
-    public List<IFonds> getKoersen() throws RemoteException
-    {
-        return fondsen;
-    }
-
-    public double generateKoers()
-    {
+    public double generateKoers() {
         Random r = new Random();
         double koers = r.nextInt(101) + r.nextDouble();
         koers = Math.round(koers * 10);
         koers = koers / 10;
-        if (koers < 10)
-        {
+        if (koers < 10) {
             generateKoers();
         }
         return koers;
     }
 
-    public static void main(String[] arg)
-    {
+    public static void main(String[] arg) {
         JFXPanel fxPanel = new JFXPanel();
-        try
-        {
+
+        try {
             Registry registry = LocateRegistry.createRegistry(1099);
             IEffectenbeurs beurs = new MockEffectenBeurs();
             registry.rebind("beurs", beurs);
 
-        } catch (RemoteException ex)
-        {
+        } catch (RemoteException ex) {
             System.out.println("Error");
         }
     }
 
     @Override
-    public void addListener(RemotePropertyListener listener, String property)
-    {
+    public void addListener(RemotePropertyListener listener, String property) {
         bp.addListener(listener, property);
     }
 
     @Override
-    public void removeListener(RemotePropertyListener listener, String property)
-    {
+    public void removeListener(RemotePropertyListener listener, String property) {
         bp.removeListener(listener, property);
     }
 
-    public void removeAllListeners()
-    {
-        
+    public void removeAllListeners() {
+
     }
 
-   
-    public void start(Stage primaryStage) throws Exception
-    {
+    public void start(Stage primaryStage) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+    @Override
+    public ArrayList<IFonds> getKoersen() throws RemoteException {
+       return fondsen;
     }
 }

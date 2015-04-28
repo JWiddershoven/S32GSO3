@@ -9,6 +9,7 @@ import aex.shared.IFonds;
 import fontys.observer.RemotePublisher;
 import java.io.Serializable;
 import java.rmi.*;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -20,6 +21,6 @@ public interface IEffectenbeurs extends RemotePublisher {
      * @return De fondsen.
      * @throws java.rmi.RemoteException
      */
-    public List<IFonds> getKoersen() throws RemoteException;
+    public ArrayList<IFonds> getKoersen() throws RemoteException;
     
 }

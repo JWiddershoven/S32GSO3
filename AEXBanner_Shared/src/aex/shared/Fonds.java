@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Jelle
  */
-public class Fonds extends UnicastRemoteObject implements IFonds, Serializable {
+public class Fonds extends UnicastRemoteObject implements IFonds {
 
     private String naam;
     private double koers;
