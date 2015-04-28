@@ -57,14 +57,10 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                     public void run() {
                         try {
                             generateKoersen();
-<<<<<<< HEAD
-                            bp.inform(this, "Fondsen", null, fondsen);
-                        } catch (RemoteException ex) {
-=======
-                        }
+                        } 
                         catch (RemoteException ex)
                         {
->>>>>>> 9fd8aa6366a97109265445ce319214da5427ed95
+
                             Logger.getLogger(MockEffectenBeurs.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -81,12 +77,10 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         fondsen.add(new Fonds("Google", generateKoers()));
         fondsen.add(new Fonds("Nokia", generateKoers()));
         fondsen.add(new Fonds("Yahoo", generateKoers()));
+        bp.inform(this, "Fondsen", null, fondsen);
         return fondsen;
     }
 
-<<<<<<< HEAD
-    public double generateKoers() {
-=======
     @Override
     public ArrayList<IFonds> getKoersen() throws RemoteException
     {
@@ -95,7 +89,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public double generateKoers()
     {
->>>>>>> 9fd8aa6366a97109265445ce319214da5427ed95
+
         Random r = new Random();
         double koers = r.nextInt(101) + r.nextDouble();
         koers = Math.round(koers * 10);
@@ -135,11 +129,5 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public void start(Stage primaryStage) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    @Override
-    public ArrayList<IFonds> getKoersen() throws RemoteException {
-       return fondsen;
     }
 }
