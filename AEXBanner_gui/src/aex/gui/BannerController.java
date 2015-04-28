@@ -5,25 +5,19 @@
  */
 package aex.gui;
 
-import aex.shared.Fonds;
 import aex.shared.IFonds;
 import aex.shared.IEffectenbeurs;
 import java.beans.PropertyChangeEvent;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import fontys.observer.RemotePropertyListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +50,10 @@ public class BannerController extends Application implements RemotePropertyListe
             Registry registry = LocateRegistry.getRegistry("145.93.97.40", 1099);
             effectenbeurs = (IEffectenbeurs) registry.lookup("beurs");
             effectenbeurs.addListener(this, "Fondsen");
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7f013313a5e19e7a52eb53fbf89c83a3be80cc0
         } catch (NotBoundException | AccessException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,13 +76,13 @@ public class BannerController extends Application implements RemotePropertyListe
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException
     {
-        String koers = "";
-        for (IFonds fond : (ArrayList<IFonds>) evt.getNewValue())
+        String koersen = "";
+        for (IFonds fond : (List<IFonds>) evt.getNewValue())
         {
-            koers = koers + fond.getKoers();
+            koersen = koersen + " " + fond.getKoers();
         }
 
-        banner.setKoersen(koers);
+        banner.setKoersen(koersen);
     }
 
 }
