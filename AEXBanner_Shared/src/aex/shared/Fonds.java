@@ -6,7 +6,7 @@
 package aex.shared;
 
 import aex.shared.IFonds;
-import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Fonds implements IFonds {
     private String naam;
     private double koers;
     
-    public Fonds(String naam, double koers)
+    public Fonds(String naam, double koers) throws RemoteException
     {
         this.naam = naam;
         this.koers = koers;

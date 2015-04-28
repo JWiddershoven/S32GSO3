@@ -6,6 +6,7 @@
 package aex.shared;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 
 /**
  *

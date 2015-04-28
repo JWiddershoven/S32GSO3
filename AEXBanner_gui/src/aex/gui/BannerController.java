@@ -10,79 +10,54 @@ import aex.shared.IEffectenbeurs;
 import java.beans.PropertyChangeEvent;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import fontys.observer.RemotePropertyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Jelle
  */
-public class BannerController extends Application implements RemotePropertyListener {
+public class BannerController extends Application implements RemotePropertyListener
+{
 
     private AEXBanner banner;
-    private IEffectenbeurs effectenbeurs;
+    private IEffectenbeurs effectenbeurs = null;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException
+    {
+
         banner = new AEXBanner();
+        
         try
         {
-            UnicastRemoteObject.exportObject((Remote) this);
-        }
-        catch (RemoteException ex)
+            UnicastRemoteObject.exportObject(this, 0);
+        } catch (RemoteException ex)
         {
             Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //primaryStage acts as the common stage of the AEXBanner and the 
-        //BannerController:
+        try
+        {
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            effectenbeurs = (IEffectenbeurs) registry.lookup("beurs");
+            effectenbeurs.addListener(this, "Fondsen");
+        } catch (NotBoundException | AccessException ex)
+        {
+            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         banner.start(primaryStage);
-        //create a timer which polls every 2 seconds
-        Timer pollingTimer = new Timer();
-        TimerTask task = new TimerTask() {
 
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        String koers = "";
-                        try {
-                            Registry registry = LocateRegistry.getRegistry("192.168.192.64", 1099);
-                            IEffectenbeurs fondsen = (IEffectenbeurs) registry.lookup("Fondsen");
-                            effectenbeurs = fondsen;
-                            for (IFonds i : effectenbeurs.getKoersen()) {
-                                koers += i.getNaam() + " " + i.getKoers() + " ";
-                            }
-                            banner.setKoersen(koers);
-                        } catch (RemoteException ex) {
-
-                        } catch (NotBoundException ex) {
-                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
-            }
-        };
-
-        pollingTimer.scheduleAtFixedRate(task, 0, 2000);
-
-        //remove pollingTimer as soon as primaryStage is closing:
-        primaryStage.setOnCloseRequest((WindowEvent we) -> {
-            pollingTimer.cancel();
-        });
     }
 
     /**
@@ -90,14 +65,21 @@ public class BannerController extends Application implements RemotePropertyListe
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException
     {
-        
+        String koersen = "";
+        for (IFonds fond : (List<IFonds>) evt.getNewValue())
+        {
+            koersen = koersen + " " + fond.getKoers();
+        }
+        System.out.println(koersen);
+        banner.setKoersen(koersen);
     }
 
 }
