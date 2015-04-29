@@ -52,22 +52,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         {
 
             @Override
-<<<<<<< HEAD
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            generateKoersen();
-                        } 
-                        catch (RemoteException ex)
-                        {
-
-                            Logger.getLogger(MockEffectenBeurs.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
-=======
             public void run()
             {
                 try
@@ -92,7 +76,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 //
 //                    }
 //                });
->>>>>>> f7f013313a5e19e7a52eb53fbf89c83a3be80cc0
             }
         };
         koersenTimer.scheduleAtFixedRate(task, 0, 5000);
@@ -118,10 +101,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 
     public double generateKoers()
     {
-<<<<<<< HEAD
-
-=======
->>>>>>> f7f013313a5e19e7a52eb53fbf89c83a3be80cc0
         Random r = new Random();
         double koers = r.nextInt(101) + r.nextDouble();
         koers = Math.round(koers * 10);
@@ -146,7 +125,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             } 
             
             IEffectenbeurs beurs = new MockEffectenBeurs();
-            System.setProperty("java.rmi.server.hostname", "145.93.97.40");
+            System.setProperty("java.rmi.server.hostname", "145.93.34.47");
             registry.rebind("beurs", beurs);
 
         } catch (RemoteException ex)
@@ -167,7 +146,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         bp.removeListener(listener, property);
     }
 
-<<<<<<< HEAD
     public void removeAllListeners() {
 
     }
@@ -175,10 +153,4 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     public void start(Stage primaryStage) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-=======
-    public void removeAllListeners()
-    {
-
-    }
->>>>>>> f7f013313a5e19e7a52eb53fbf89c83a3be80cc0
 }
