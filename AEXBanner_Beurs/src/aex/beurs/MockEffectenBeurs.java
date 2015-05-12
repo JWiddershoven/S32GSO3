@@ -30,7 +30,10 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 {
 
     private ArrayList<IFonds> fondsen;
-    private BasicPublisher bp;
+    private BasicPublisher bp = new BasicPublisher(new String[]
+    {
+        "Fondsen"
+    });
 
     /**
      *
@@ -39,10 +42,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     public MockEffectenBeurs() throws RemoteException
     {
         koersenTimer();
-        bp = new BasicPublisher(new String[]
-        {
-            "Fondsen"
-        });
     }
 
     public void koersenTimer()
@@ -54,6 +53,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             @Override
             public void run()
             {
+<<<<<<< HEAD
                 try
                 {
                     generateKoersen();
@@ -76,12 +76,30 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 //
 //                    }
 //                });
+=======
+
+                Platform.runLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            updateKoersen();
+                        }
+                        catch (RemoteException ex)
+                        {
+
+                        }
+                    }
+                });
+>>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
             }
         };
         koersenTimer.scheduleAtFixedRate(task, 0, 5000);
     }
 
-    public List<IFonds> generateKoersen() throws RemoteException
+    public List<IFonds> updateKoersen() throws RemoteException
     {
         fondsen = new ArrayList<>();
         fondsen.add(new Fonds("Microsoft", generateKoers()));
@@ -109,6 +127,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         {
             generateKoers();
         }
+        System.out.println(koers);
         return koers;
     }
 
@@ -122,13 +141,18 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             if (registry == null)
             {
                 registry = LocateRegistry.getRegistry(1099);
-            } 
-            
+            }
+
             IEffectenbeurs beurs = new MockEffectenBeurs();
+<<<<<<< HEAD
             System.setProperty("java.rmi.server.hostname", "145.93.34.47");
+=======
+            //System.setProperty("java.rmi.server.hostname", "localhost");
+>>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
             registry.rebind("beurs", beurs);
 
-        } catch (RemoteException ex)
+        }
+        catch (RemoteException ex)
         {
             System.out.println("Error");
         }
@@ -146,6 +170,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         bp.removeListener(listener, property);
     }
 
+<<<<<<< HEAD
     public void removeAllListeners() {
 
     }
@@ -153,4 +178,15 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     public void start(Stage primaryStage) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+=======
+    public void start(Stage primaryStage) throws Exception
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void removeAllListeners()
+    {
+
+    }
+>>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
 }

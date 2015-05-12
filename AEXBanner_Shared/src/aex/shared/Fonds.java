@@ -6,15 +6,13 @@
 package aex.shared;
 
 import aex.shared.IFonds;
-import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Jelle
  */
-public class Fonds extends UnicastRemoteObject implements IFonds {
+public class Fonds implements IFonds {
 
     private String naam;
     private double koers;
