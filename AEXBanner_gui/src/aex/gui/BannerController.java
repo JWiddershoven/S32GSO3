@@ -47,7 +47,7 @@ public class BannerController extends Application implements RemotePropertyListe
 
         try
         {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry("145,93.96.75", 1099);
             effectenbeurs = (IEffectenbeurs) registry.lookup("beurs");
             effectenbeurs.addListener(this, "Fondsen");
         } catch (NotBoundException | AccessException ex)
