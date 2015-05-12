@@ -53,10 +53,9 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             @Override
             public void run()
             {
-<<<<<<< HEAD
                 try
                 {
-                    generateKoersen();
+                    updateKoersen();
                 } catch (RemoteException ex)
                 {
 
@@ -76,7 +75,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
 //
 //                    }
 //                });
-=======
 
                 Platform.runLater(new Runnable()
                 {
@@ -93,7 +91,6 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
                         }
                     }
                 });
->>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
             }
         };
         koersenTimer.scheduleAtFixedRate(task, 0, 5000);
@@ -144,11 +141,8 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
             }
 
             IEffectenbeurs beurs = new MockEffectenBeurs();
-<<<<<<< HEAD
-            System.setProperty("java.rmi.server.hostname", "145.93.34.47");
-=======
+
             //System.setProperty("java.rmi.server.hostname", "localhost");
->>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
             registry.rebind("beurs", beurs);
 
         }
@@ -170,7 +164,7 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
         bp.removeListener(listener, property);
     }
 
-<<<<<<< HEAD
+
     public void removeAllListeners() {
 
     }
@@ -178,15 +172,4 @@ public class MockEffectenBeurs extends UnicastRemoteObject implements IEffectenb
     public void start(Stage primaryStage) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-=======
-    public void start(Stage primaryStage) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void removeAllListeners()
-    {
-
-    }
->>>>>>> c37b31373c28c153ac3fbf4f4e12ccb561515215
 }
