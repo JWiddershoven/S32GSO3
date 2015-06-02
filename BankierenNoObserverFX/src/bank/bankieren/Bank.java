@@ -1,12 +1,16 @@
 package bank.bankieren;
 
+import fontys.observer.BasicPublisher;
+import fontys.observer.RemotePropertyListener;
+import fontys.observer.RemotePublisher;
 import fontys.util.*;
+import java.rmi.RemoteException;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Bank implements IBank
+public class Bank implements IBank, RemotePublisher
 {
 
     /**
@@ -18,6 +22,11 @@ public class Bank implements IBank
     private int nieuwReknr;
     private String name;
     private Lock bankLock = new ReentrantLock();
+    private BasicPublisher bp = new BasicPublisher(new String[]
+    {
+        "Rekeningnummer",
+        "Saldo"
+    });
 
     public Bank(String name)
     {
@@ -108,6 +117,11 @@ public class Bank implements IBank
             }
             success = dest_account.muteer(money);
 
+            if (success)
+            {
+                bp.inform(this, "Saldo", null, money.getValue());
+            }
+
             if (!success) // rollback
             {
                 source_account.muteer(money);
@@ -126,6 +140,18 @@ public class Bank implements IBank
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public void addListener(RemotePropertyListener rl, String property) throws RemoteException
+    {
+        bp.addListener(rl, property);
+    }
+
+    @Override
+    public void removeListener(RemotePropertyListener rl, String property) throws RemoteException
+    {
+        bp.removeListener(rl, property);
     }
 
 }

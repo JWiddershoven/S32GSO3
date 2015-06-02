@@ -7,11 +7,9 @@
     <offline-allowed/>
   </information>
   <resources>
-    <jfx:javafx-runtime version="8.0+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
-  </resources>
-  <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="BankierenNoObserverFX.jar" size="39381" download="eager" />
+    <jar href="BankierenNoObserverFX.jar" size="39583" download="eager" />
+    <jar href="lib/FontysObserver.jar" size="7994" download="eager" />
   </resources>
 <security>
   <all-permissions/>
