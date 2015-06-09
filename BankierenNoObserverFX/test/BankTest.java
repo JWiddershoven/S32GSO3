@@ -24,7 +24,6 @@ public class BankTest {
 
     IBank bank;
     IRekeningTbvBank rekening;
-    IKlant klant;
     Money money;
 
     @Before
@@ -67,7 +66,6 @@ public class BankTest {
         } catch (IllegalArgumentException exc) {
             fail("Lege string is niet toegestaan als parameter.");
         }
-
     }
 
     @Test

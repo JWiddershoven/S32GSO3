@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -30,21 +31,25 @@ public class BankiersessieTest {
     public BankiersessieTest() {
     }
     Bank bank;
-    IBankiersessie sessie;
-    Money bedrag;
-    IRekening rekening;
-    IKlant klant;
+      IBankiersessie sessie;
+      Money bedrag;
+      IRekening rekening;
+      IKlant klant;
+
+    @BeforeClass
+    public static void setUpClass() throws RemoteException {
+        
+    }
 
     @Before
     public void setUp() throws RemoteException {
         bank = new Bank("ING");
-        sessie = new Bankiersessie(100000000, bank);
         bedrag = new Money(500000, "€");
         klant = new Klant("Jordy", "Valkenswaard");
         bank.openRekening("Jordy", "Valkenswaard");
+        bank.openRekening("Jelle", "Dennenlaan");
+        sessie = new Bankiersessie(100000000, bank);
         rekening = new Rekening(100000000, klant, bedrag);
-        
-
     }
 
     @Test
@@ -61,11 +66,25 @@ public class BankiersessieTest {
          * @throws NumberDoesntExistException als bestemming onbekend is
          * @throws InvalidSessionException als sessie niet meer geldig is
          */
+        
+        //Geld overmaken naar bekende bestemming
+        try {
+            assertTrue("Juiste transactie", sessie.maakOver(100000001, new Money(1000, "€")));
+        } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
+            Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //Geld overmaken naar onbekende bestemming
+        try {
+            assertFalse(sessie.maakOver(100000999, new Money(50000, "€")));
+        } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
+            Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         //Geld overmaken naar zelfde rekening
         try {
             try {
-                sessie.maakOver(100000000, bedrag);
+                sessie.maakOver(100000000, new Money(1000, "€"));
                 fail("Bron en bestemming mogen niet gelijk zijn.");
             } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
                 Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,14 +104,6 @@ public class BankiersessieTest {
         } catch (RuntimeException exc) {
             Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, exc);
         }
-
-        try {
-            //Geld overmaken naar onbekende bestemmin
-            assertFalse(sessie.maakOver(100000999, new Money(50000, "€")));
-        } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
-            Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     @Test
@@ -104,21 +115,25 @@ public class BankiersessieTest {
          * verlopen is
          * @throws RemoteException
          */
+        //Juiste rekening opvragen
         try {
-            assertEquals(rekening, sessie.getRekening());
+            assertEquals("Rekening gegevens zijn hetzelfde.", rekening, sessie.getRekening());
         } catch (InvalidSessionException | RemoteException ex) {
             fail("Rekening nummer komt niet overeen");
         }
-
     }
 
     @Test
     public void testIsGeldig() {
-        /**
-         * @returns true als de laatste aanroep van getRekening of maakOver voor
-         * deze sessie minder dan GELDIGHEIDSDUUR geleden is en er geen
-         * communicatiestoornis in de tussentijd is opgetreden, anders false
-         */
-
+        try {
+            /**
+             * @returns true als de laatste aanroep van getRekening of maakOver voor
+             * deze sessie minder dan GELDIGHEIDSDUUR geleden is en er geen
+             * communicatiestoornis in de tussentijd is opgetreden, anders false
+             */
+            assertTrue(sessie.isGeldig());
+        } catch (RemoteException ex) {
+            fail("Sessie is niet meer geldig.");
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="JORDY-PC" name="BankTest" skipped="0" tests="8" time="0.056" timestamp="2015-06-09T18:25:34">
+<testsuite errors="0" failures="0" hostname="JORDY-PC" name="BalieTest" skipped="0" tests="2" time="0.092" timestamp="2015-06-09T19:14:03">
   <properties>
     <property name="netbeans.autoupdate.country" value="NL" />
     <property name="javafx.binarycss" value="false" />
@@ -7,7 +7,7 @@
     <property name="javac.test.classpath" value="C:\Program Files\Java\jdk1.8.0_40\jre/lib/javaws.jar:C:\Program Files\Java\jdk1.8.0_40\jre/lib/deploy.jar:C:\Program Files\Java\jdk1.8.0_40\jre/lib/plugin.jar:FontysObserver.jar:build/classes:C:\Program Files\NetBeans 8.0.2\platform\modules\ext\junit-4.10.jar" />
     <property name="manifest.custom.codebase" value="*" />
     <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 8.0.2\java\docs\junit-3.8.2-api.zip" />
-    <property name="javac.includes" value="BankTest.java" />
+    <property name="javac.includes" value="BalieTest.java" />
     <property name="ant.core.lib" value="C:\Program Files\NetBeans 8.0.2\extide\ant\lib\ant.jar" />
     <property name="javadoc.windowtitle" value="" />
     <property name="javafx.preloader.enabled" value="false" />
@@ -45,7 +45,7 @@
     <property name="user.name" value="Jordy" />
     <property name="copylibs.rebase" value="true" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner BankTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\test\results\TEST-BankTest.xml crashfile=C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\junitvmwatcher3023341741277610748.properties propsfile=C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\junit2602896143371637344.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner BalieTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\test\results\TEST-BalieTest.xml crashfile=C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\junitvmwatcher2562701525895299346.properties propsfile=C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\junit7012105014935216670.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -63,7 +63,7 @@
     <property name="build.compiler.emacs" value="true" />
     <property name="javafx.deploy.includeDT" value="true" />
     <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_40\jre\lib\endorsed" />
-    <property name="test.includes" value="BankTest.java" />
+    <property name="test.includes" value="BalieTest.java" />
     <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 8.0.2\platform\core\core.jar;C:\Program Files\NetBeans 8.0.2\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_ru.jar;C:\Program Files\NetBeans 8.0.2\platform\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_ru.jar;C:\Program Files\NetBeans 8.0.2\nb\core\locale\org-netbeans-upgrader_zh_CN.jar" />
     <property name="jnlp.enabled" value="false" />
     <property name="java.vm.specification.version" value="1.8" />
@@ -78,7 +78,7 @@
     <property name="javac.debug" value="true" />
     <property name="javadoc.splitindex" value="true" />
     <property name="file.separator" value="\" />
-    <property name="javac.includesfile.binary" value="C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\null376401849" />
+    <property name="javac.includesfile.binary" value="C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\null1627426256" />
     <property name="file.reference.FontysObserver.jar" value="FontysObserver.jar" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="ant.file.type.BankierenNoObserverFX-impl" value="file" />
@@ -92,7 +92,8 @@
     <property name="libs.junit.classpath" value="C:\Program Files\NetBeans 8.0.2\java\modules\ext\junit-3.8.2.jar" />
     <property name="libs.hibernate4-persistencemodelgen.javadoc" value="" />
     <property name="libs.jaxb.javadoc" value="C:\Program Files\NetBeans 8.0.2\ide\docs\jaxb-api-doc.zip" />
-    <property name="javac.includes.binary" value="C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\test\classes\BankTest.class" />
+    <property name="org.openide.awt.SwingBrowserImpl.do-not-block-awt" value="false" />
+    <property name="javac.includes.binary" value="C:\Users\Jordy\Documents\School\GSO\BankierenNoObserverFX\build\test\classes\BalieTest.class" />
     <property name="ant.home" value="C:\Program Files\NetBeans 8.0.2\extide\ant" />
     <property name="libs.junit_4.src" value="C:\Program Files\NetBeans 8.0.2\java\docs\junit-4.10-sources.jar" />
     <property name="javafx.run.height" value="600" />
@@ -301,8 +302,8 @@
     <property name="os.version" value="6.3" />
     <property name="application.args" value="" />
     <property name="manifest.custom.permissions" value="" />
-    <property name="sun.awt.enableExtraMouseButtons" value="true" />
     <property name="main.class.available" value="true" />
+    <property name="sun.awt.enableExtraMouseButtons" value="true" />
     <property name="sun.desktop" value="windows" />
     <property name="libs.hibernate4-persistence.src" value="" />
     <property name="libs.hibernate4-support.maven-pom" value="" />
@@ -324,26 +325,20 @@
     <property name="libs.hibernate4-persistencemodelgen.classpath" value="C:\Program Files\NetBeans 8.0.2\java\modules\ext\hibernate4\hibernate-jpamodelgen-4.3.1.Final.jar" />
     <property name="libs.junit.src" value="" />
     <property name="annotation.processing.source.output" value="build/generated-sources/ap-source-output" />
-    <property name="main.class" value="com.javafx.main.Main" />
+    <property name="main.class" value="bank.gui.BankierClient" />
     <property name="libs.CopyLibs.src" value="" />
     <property name="build.dir" value="build" />
     <property name="ant.file.type.BankierenFX300" value="file" />
     <property name="ant.version" value="Apache Ant(TM) version 1.9.4 compiled on April 29 2014" />
-    <property name="build.classes.excludes" value="**/*.java,**/*.form" />
     <property name="file.encoding" value="Cp1252" />
+    <property name="build.classes.excludes" value="**/*.java,**/*.form" />
     <property name="jdkBug6558476" value="false" />
     <property name="javadoc.nonavbar" value="false" />
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
   </properties>
-  <testcase classname="BankTest" name="getName" time="0.003" />
-  <testcase classname="BankTest" name="testMaakOver" time="0.0" />
-  <testcase classname="BankTest" name="testOpenRekening" time="0.0" />
-  <testcase classname="BankTest" name="testGetRekeningMetNummerDatNietBestaat" time="0.0" />
-  <testcase classname="BankTest" name="testGetRekeningMetBestaandNummer" time="0.0" />
-  <testcase classname="BankTest" name="testMaakOverNaarZelfdeRekening" time="0.0" />
-  <testcase classname="BankTest" name="testMaakOverMetNegatiefBedrag" time="0.0" />
-  <testcase classname="BankTest" name="testOpenRekeningMetLegeString" time="0.001" />
+  <testcase classname="BalieTest" name="testOpenRekening" time="0.001" />
+  <testcase classname="BalieTest" name="testLogIn" time="0.002" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
