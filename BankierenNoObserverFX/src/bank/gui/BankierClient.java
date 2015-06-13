@@ -69,6 +69,7 @@ public class BankierClient extends Application implements RemotePropertyListener
             Properties props = new Properties();
             props.load(in);
             String rmiBalie = props.getProperty("balie");
+            System.out.println(rmiBalie);
             in.close();
 
             IBalie balie = (IBalie) Naming.lookup("rmi://" + rmiBalie);

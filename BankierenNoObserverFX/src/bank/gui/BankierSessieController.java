@@ -29,7 +29,8 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable {
+public class BankierSessieController implements Initializable
+{
 
     @FXML
     private Hyperlink hlLogout;
@@ -54,23 +55,27 @@ public class BankierSessieController implements Initializable {
     private IBalie balie;
     private IBankiersessie sessie;
 
-    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) {
+    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie)
+    {
         this.balie = balie;
         this.sessie = sessie;
         this.application = application;
         IRekening rekening = null;
-        try {
+        try
+        {
             rekening = sessie.getRekening();
             tfAccountNr.setText(rekening.getNr() + "");
             tfBalance.setText(rekening.getSaldo() + "");
             String eigenaar = rekening.getEigenaar().getNaam() + " te "
                     + rekening.getEigenaar().getPlaats();
             tfNameCity.setText(eigenaar);
-        } catch (InvalidSessionException ex) {
+        } catch (InvalidSessionException ex)
+        {
             taMessage.setText("bankiersessie is verlopen");
             Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
 
-        } catch (RemoteException ex) {
+        } catch (RemoteException ex)
+        {
             taMessage.setText("verbinding verbroken");
             Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -80,38 +85,55 @@ public class BankierSessieController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
     }
 
     @FXML
-    private void logout(ActionEvent event) {
-        try {
+    private void logout(ActionEvent event)
+    {
+        try
+        {
             sessie.logUit();
             application.gotoLogin(balie, "");
-        } catch (RemoteException e) {
+        } catch (RemoteException e)
+        {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void transfer(ActionEvent event) {
-        try {
-            int from = Integer.parseInt(tfAccountNr.getText());
-            int to = Integer.parseInt(tfToAccountNr.getText());
-            if (from == to) {
+    private void transfer(ActionEvent event)
+    {
+        try
+        {
+            int from = 0;
+            int to = 0;
+            try
+            {
+                from = Integer.parseInt(tfAccountNr.getText());
+                to = Integer.parseInt(tfToAccountNr.getText());
+            } catch (NumberFormatException ex)
+            {
+                ex.printStackTrace();
+            }
+            if (from == to)
+            {
                 taMessage.setText("can't transfer money to your own account");
             }
             long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);
             sessie.maakOver(to, new Money(centen, Money.EURO));
-        } catch (RemoteException e1) {
+        } catch (RemoteException e1)
+        {
             e1.printStackTrace();
             taMessage.setText("verbinding verbroken");
-        } catch (NumberDoesntExistException | InvalidSessionException e1) {
+        } catch (NumberDoesntExistException | InvalidSessionException e1)
+        {
             e1.printStackTrace();
             taMessage.setText(e1.getMessage());
         }
     }
-    
+
     public void updateBalance(double saldo)
     {
         this.tfBalance.setText(String.valueOf(saldo));

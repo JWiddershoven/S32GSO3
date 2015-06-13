@@ -60,7 +60,7 @@ public class OpenRekeningController  implements Initializable {
             if (accountNaam == null) {
                 return;
             }
-            System.out.println("account:"+accountNaam);
+            System.out.println("account: "+accountNaam);
             application.gotoLogin(balie, accountNaam);
         } catch (RemoteException ex) {
             Logger.getLogger(OpenRekeningController.class.getName()).log(Level.SEVERE, null, ex);

@@ -18,18 +18,17 @@ public class Rekening implements IRekeningTbvBank {
      * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
     public Rekening(int number, IKlant klant, String currency) {
-        this(number, klant, new Money(0, currency));
+        this(number, klant, new Money(1000, currency));
     }
 
     /**
      * creatie van een bankrekening met saldo saldo<br>
      * de constructor heeft package-access omdat de PersistentAccount-objecten door een
      * het PersistentBank-object worden beheerd
+     * @param klant
+     * @param saldo
      * @see banking.persistence.PersistentBank
      * @param number het bankrekeningnummer
-     * @param name de naam van de eigenaar
-     * @param city de woonplaats van de eigenaar
-     * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
     public Rekening(int number, IKlant klant, Money saldo) {
         this.nr = number;
@@ -37,14 +36,17 @@ public class Rekening implements IRekeningTbvBank {
         this.saldo = saldo;
     }
 
+    @Override
     public boolean equals(Object obj) {
         return nr == ((IRekening) obj).getNr();
     }
 
+    @Override
     public int getNr() {
         return nr;
     }
 
+    @Override
     public String toString() {
         return nr + ": " + eigenaar.toString();
     }
@@ -53,14 +55,17 @@ public class Rekening implements IRekeningTbvBank {
         return (bedrag.getCents() + saldo.getCents() >= KREDIETLIMIET);
     }
 
+    @Override
     public IKlant getEigenaar() {
         return eigenaar;
     }
 
+    @Override
     public Money getSaldo() {
         return saldo;
     }
 
+    @Override
     public boolean muteer(Money bedrag) {
         if (bedrag.getCents() == 0) {
             throw new RuntimeException(" bedrag = 0 bij aanroep 'muteer'");
