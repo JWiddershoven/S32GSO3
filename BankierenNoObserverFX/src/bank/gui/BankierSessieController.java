@@ -111,4 +111,9 @@ public class BankierSessieController implements Initializable {
             taMessage.setText(e1.getMessage());
         }
     }
+    
+    public void updateBalance(double saldo)
+    {
+        this.tfBalance.setText(String.valueOf(saldo));
+    }
 }

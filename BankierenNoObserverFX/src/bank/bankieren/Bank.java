@@ -24,7 +24,6 @@ public class Bank implements IBank, RemotePublisher
     private Lock bankLock = new ReentrantLock();
     private BasicPublisher bp = new BasicPublisher(new String[]
     {
-        "Rekeningnummer",
         "Saldo"
     });
 

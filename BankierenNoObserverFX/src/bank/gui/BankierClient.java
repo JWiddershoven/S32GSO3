@@ -17,10 +17,13 @@ import bank.gui.LoginController;
 import bank.gui.OpenRekeningController;
 import bank.internettoegang.IBalie;
 import bank.internettoegang.IBankiersessie;
+import fontys.observer.RemotePropertyListener;
+import java.beans.PropertyChangeEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,12 +39,12 @@ import javafx.stage.Stage;
  *
  * @author frankcoenen
  */
-public class BankierClient extends Application {
+public class BankierClient extends Application implements RemotePropertyListener{
     
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;
     private final double MINIMUM_WINDOW_HEIGHT = 500.0;
-   // 
+    private BankierSessieController sessionController;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -110,7 +113,7 @@ public class BankierClient extends Application {
       
       protected void gotoBankierSessie(IBalie balie, IBankiersessie sessie) {
         try {
-            BankierSessieController sessionController = (BankierSessieController) replaceSceneContent("BankierSessie.fxml");
+            sessionController = (BankierSessieController) replaceSceneContent("BankierSessie.fxml");
             sessionController.setApp(this, balie, sessie);
         } catch (Exception ex) {
             Logger.getLogger(BankierClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,6 +145,13 @@ public class BankierClient extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) throws RemoteException
+    {
+        double saldo = (Double) pce.getNewValue();
+        sessionController.updateBalance(saldo);
     }
     
 }
