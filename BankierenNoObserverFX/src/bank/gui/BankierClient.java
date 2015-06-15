@@ -45,6 +45,7 @@ public class BankierClient extends Application {
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;
     private final double MINIMUM_WINDOW_HEIGHT = 500.0;
+    private BankierSessieController sessieController = null;
 
     @Override
     public void start(Stage primaryStage) throws IOException {

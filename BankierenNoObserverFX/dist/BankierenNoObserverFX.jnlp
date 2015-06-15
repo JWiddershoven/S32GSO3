@@ -8,8 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="BankierenNoObserverFX.jar" size="40741" download="eager" />
-    <jar href="lib/FontysObserver.jar" size="7997" download="eager" />
+    <jar href="BankierenNoObserverFX.jar" size="40877" download="eager" />
+    <jar href="lib/FontysObserver.jar" size="7993" download="eager" />
   </resources>
 <security>
   <all-permissions/>

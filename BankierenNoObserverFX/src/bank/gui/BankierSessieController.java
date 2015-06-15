@@ -19,6 +19,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,7 +33,7 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable, RemotePropertyListener, Serializable
+public class BankierSessieController implements Initializable, Serializable, RemotePropertyListener
 {
 
     @FXML
@@ -69,7 +70,6 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
         this.sessie = sessie;
         this.application = application;
         IRekening rekening = null;
-        sessie.addListener(this, "Saldo");
         try
         {
             rekening = sessie.getRekening();
@@ -141,11 +141,12 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             e1.printStackTrace();
             taMessage.setText(e1.getMessage());
         }
+        
     }
 
     public void updateBalance(String saldo)
     {
-        //System.out.println(saldo);
+        System.out.println(saldo);
         tfBalance.setText(saldo);
     }
 
