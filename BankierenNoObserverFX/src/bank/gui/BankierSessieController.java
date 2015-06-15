@@ -70,6 +70,7 @@ public class BankierSessieController implements Initializable, Serializable, Rem
         this.sessie = sessie;
         this.application = application;
         IRekening rekening = null;
+        sessie.addListener(this, "Saldo");
         try
         {
             rekening = sessie.getRekening();
