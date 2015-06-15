@@ -85,6 +85,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
     public void logUit() throws RemoteException
     {
         UnicastRemoteObject.unexportObject(this, true);
+        removeListener(this, "Saldo");
     }
 
     @Override

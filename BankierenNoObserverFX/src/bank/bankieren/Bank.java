@@ -5,10 +5,14 @@ import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Bank implements IBank, RemotePublisher
 {
