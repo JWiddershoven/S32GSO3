@@ -118,7 +118,7 @@ public class Bank implements IBank, RemotePublisher
 
             if (success)
             {
-                bp.inform(this, "Saldo", null, money.getValue());
+                bp.inform(this, "Saldo", null, source_account.getSaldo());
             }
 
             if (!success) // rollback
