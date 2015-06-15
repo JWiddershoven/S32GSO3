@@ -8,14 +8,12 @@ import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
-import fontys.observer.RemotePublisher;
 
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
 
-public class Bankiersessie extends UnicastRemoteObject implements
-        IBankiersessie, RemotePropertyListener, RemotePublisher
+public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
 {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +30,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
         laatsteAanroep = System.currentTimeMillis();
         this.reknr = reknr;
         this.bank = bank;
-
+        bank.addListener(this, "Saldo");
     }
 
     public boolean isGeldig()
@@ -91,7 +89,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-        bp.inform(this, "Saldo", null, pce.getNewValue());
+        bp.inform(this, "Saldo", null, String.valueOf(pce.getNewValue()));
     }
 
     @Override

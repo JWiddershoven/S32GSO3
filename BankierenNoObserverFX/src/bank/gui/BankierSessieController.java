@@ -9,8 +9,11 @@ import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import bank.internettoegang.IBalie;
 import bank.internettoegang.IBankiersessie;
+import fontys.observer.RemotePropertyListener;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
+import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -29,38 +32,44 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable
+public class BankierSessieController implements Initializable, RemotePropertyListener, Serializable
 {
 
     @FXML
-    private Hyperlink hlLogout;
+    private transient Hyperlink hlLogout;
 
     @FXML
-    private TextField tfNameCity;
+    private transient TextField tfNameCity;
+    
     @FXML
-    private TextField tfAccountNr;
+    private transient TextField tfAccountNr;
+    
     @FXML
-    private TextField tfBalance;
+    private transient TextField tfBalance;
+    
     @FXML
-    private TextField tfAmount;
+    private transient TextField tfAmount;
+    
     @FXML
-    private TextField tfToAccountNr;
+    private transient TextField tfToAccountNr;
+    
     @FXML
-    private Button btTransfer;
+    private transient Button btTransfer;
+    
     @FXML
+    private transient TextArea taMessage;
 
-    private TextArea taMessage;
-
-    private BankierClient application;
+    private transient BankierClient application;
     private IBalie balie;
     private IBankiersessie sessie;
 
-    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie)
+    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) throws RemoteException
     {
         this.balie = balie;
         this.sessie = sessie;
         this.application = application;
         IRekening rekening = null;
+        sessie.addListener(this, "Saldo");
         try
         {
             rekening = sessie.getRekening();
@@ -134,8 +143,16 @@ public class BankierSessieController implements Initializable
         }
     }
 
-    public void updateBalance(double saldo)
+    public void updateBalance(String saldo)
     {
-        this.tfBalance.setText(String.valueOf(saldo));
+        //System.out.println(saldo);
+        tfBalance.setText(saldo);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) throws RemoteException
+    {
+        String saldo = String.valueOf(pce.getNewValue());
+        updateBalance(saldo);
     }
 }

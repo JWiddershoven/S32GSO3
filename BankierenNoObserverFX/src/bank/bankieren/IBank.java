@@ -1,12 +1,13 @@
 package bank.bankieren;
 
+import fontys.observer.RemotePublisher;
 import fontys.util.*;
 
 /**
  * @author 871059
  * 
  */
-public interface IBank {
+public interface IBank extends RemotePublisher {
 
     /**
      * creatie van een nieuwe bankrekening met een identificerend rekeningnummer; 
@@ -50,4 +51,6 @@ public interface IBank {
      * @return de naam van deze bank
      */
     String getName();
+    
+    
 }
