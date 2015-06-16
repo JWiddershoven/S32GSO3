@@ -16,6 +16,7 @@ import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
 import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
@@ -25,7 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author Jelle
  */
-public class Centrale implements ICentrale
+public class Centrale implements ICentrale, Serializable
 {
 
     private transient Lock centraleLock = new ReentrantLock();

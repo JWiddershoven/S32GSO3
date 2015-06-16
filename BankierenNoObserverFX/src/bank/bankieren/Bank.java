@@ -1,11 +1,14 @@
 package bank.bankieren;
 
 import bank.centrale.Centrale;
+import bank.centrale.ICentrale;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
 import java.beans.PropertyChangeEvent;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -29,7 +32,7 @@ public class Bank implements IBank
     private String name;
     private String prefix;
     private Lock bankLock = new ReentrantLock();
-    private Centrale centrale;
+    private ICentrale centrale;
     private BasicPublisher bp = new BasicPublisher(new String[]
     {
         "Saldo"
@@ -43,7 +46,17 @@ public class Bank implements IBank
         this.nieuwReknr = 100000000;
         this.prefix = name.substring(0, 3);
         this.name = name;
-        this.centrale = new Centrale();
+        Registry reg = LocateRegistry.getRegistry(1098);
+        try
+        {
+            this.centrale = (ICentrale) reg.lookup("centrale");
+        } catch (NotBoundException ex)
+        {
+            Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AccessException ex)
+        {
+            Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -117,7 +130,7 @@ public class Bank implements IBank
             String prefixDestination = destination.substring(0, 3);
 
             boolean success = false;
-            
+
             if (prefixSource.equals(prefixDestination))
             {
 
@@ -158,12 +171,14 @@ public class Bank implements IBank
                 {
                     Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 centrale.maakOver(source, destination, money);
+                
                 if (externOvermaken)
                 {
                     success = true;
                 }
-                
+
                 return success;
             }
 

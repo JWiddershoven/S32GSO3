@@ -42,12 +42,12 @@ public class BalieServer extends Application
     private transient final double MINIMUM_WINDOW_WIDTH = 600.0;
     private transient final double MINIMUM_WINDOW_HEIGHT = 200.0;
     private String nameBank;
-    
+
     public void BalieServer()
     {
-        
+
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws IOException
     {
@@ -75,8 +75,26 @@ public class BalieServer extends Application
         {
             this.nameBank = nameBank;
             String address = java.net.InetAddress.getLocalHost().getHostAddress();
-            int port = 1099;
             Properties props = new Properties();
+            int port = 0;
+            switch (nameBank)
+            {
+                case "ING":
+                {
+                    port = 1099;
+                    break;
+                }
+                case "SNS":
+                {
+                    port = 1100;
+                    break;
+                }
+                case "RaboBank":
+                {
+                    port = 1101;
+                    break;
+                }
+            }
             String rmiBalie = address + ":" + port + "/" + nameBank;
             props.setProperty("balie", rmiBalie);
             out = new FileOutputStream(nameBank + ".props");
@@ -85,7 +103,6 @@ public class BalieServer extends Application
             Registry registry = LocateRegistry.createRegistry(port);
             IBalie balie = new Balie(new Bank(nameBank));
             Naming.rebind(nameBank, balie);
-
             return true;
 
         } catch (IOException ex)

@@ -41,22 +41,22 @@ public class BankierSessieController implements Initializable, Serializable, Rem
 
     @FXML
     private transient TextField tfNameCity;
-    
+
     @FXML
     private transient TextField tfAccountNr;
-    
+
     @FXML
     private transient TextField tfBalance;
-    
+
     @FXML
     private transient TextField tfAmount;
-    
+
     @FXML
     private transient TextField tfToAccountNr;
-    
+
     @FXML
     private transient Button btTransfer;
-    
+
     @FXML
     private transient TextArea taMessage;
 
@@ -69,8 +69,8 @@ public class BankierSessieController implements Initializable, Serializable, Rem
         this.balie = balie;
         this.sessie = sessie;
         this.application = application;
-        IRekening rekening = null;
         sessie.addListener(this, "Saldo");
+        IRekening rekening = null;
         try
         {
             rekening = sessie.getRekening();
@@ -142,7 +142,7 @@ public class BankierSessieController implements Initializable, Serializable, Rem
             e1.printStackTrace();
             taMessage.setText(e1.getMessage());
         }
-        
+
     }
 
     public void updateBalance(String saldo)
