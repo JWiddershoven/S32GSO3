@@ -11,6 +11,7 @@ import bank.bankieren.Money;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
 import fontys.util.NumberDoesntExistException;
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
@@ -23,11 +24,13 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Centrale implements ICentrale
 {
 
-    private Lock bankLock = new ReentrantLock();
+    private transient Lock centraleLock = new ReentrantLock();
     private ArrayList<IBank> banks;
-    private BasicPublisher bp = new BasicPublisher(new String[]
+    private transient BasicPublisher bp = new BasicPublisher(new String[]
     {
-        "Saldo"
+        "RekeningHerkomst",
+        "RekeningBestemming",
+        "Bedrag"
     });
 
     public Centrale()
@@ -60,12 +63,12 @@ public class Centrale implements ICentrale
     }
 
     @Override
-    public boolean maakOver(IBank bank, int herkomst, int bestemming, Money bedrag) throws NumberDoesntExistException
+    public boolean maakOver(IBank bank, String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
     {
-        bankLock.lock();
+        centraleLock.lock();
         try
         {
-            if (herkomst == bestemming)
+            if (herkomst.equals(bestemming))
             {
                 throw new RuntimeException(
                         "cannot transfer money to your own account");
@@ -113,7 +116,7 @@ public class Centrale implements ICentrale
         }
         finally
         {
-            bankLock.unlock();
+            centraleLock.unlock();
         }
     }
 
@@ -127,6 +130,12 @@ public class Centrale implements ICentrale
     public void removeListener(RemotePropertyListener rl, String string) throws RemoteException
     {
         bp.removeListener(rl, string);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) throws RemoteException
+    {
+        
     }
 
 }

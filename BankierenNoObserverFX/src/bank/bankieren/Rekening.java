@@ -4,7 +4,7 @@ public class Rekening implements IRekeningTbvBank {
 
     private static final long serialVersionUID = 7221569686169173632L;
     private static final int KREDIETLIMIET = -10000;
-    private int nr;
+    private String nr;
     private IKlant eigenaar;
     private Money saldo;
 
@@ -17,7 +17,7 @@ public class Rekening implements IRekeningTbvBank {
      * @param klant de eigenaar van deze rekening
      * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
-    public Rekening(int number, IKlant klant, String currency) {
+    public Rekening(String number, IKlant klant, String currency) {
         this(number, klant, new Money(1000, currency));
     }
 
@@ -30,7 +30,7 @@ public class Rekening implements IRekeningTbvBank {
      * @see banking.persistence.PersistentBank
      * @param number het bankrekeningnummer
      */
-    public Rekening(int number, IKlant klant, Money saldo) {
+    public Rekening(String number, IKlant klant, Money saldo) {
         this.nr = number;
         this.eigenaar = klant;
         this.saldo = saldo;
@@ -38,11 +38,17 @@ public class Rekening implements IRekeningTbvBank {
 
     @Override
     public boolean equals(Object obj) {
-        return nr == ((IRekening) obj).getNr();
+        boolean result = false;
+        IRekening rek = (IRekening) obj;
+        if (nr.equals(rek.getNr()))
+        {
+            result = true;
+        }
+        return result;
     }
 
     @Override
-    public int getNr() {
+    public String getNr() {
         return nr;
     }
 

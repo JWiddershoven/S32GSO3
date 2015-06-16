@@ -7,20 +7,20 @@ package bank.centrale;
 
 import bank.bankieren.IBank;
 import bank.bankieren.Money;
+import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.NumberDoesntExistException;
-import java.io.Serializable;
 import java.rmi.Remote;
 
 /**
  *
  * @author Jelle
  */
-public interface ICentrale extends Remote, Serializable, RemotePublisher
+public interface ICentrale extends Remote, RemotePublisher, RemotePropertyListener
 {
     public void addBank (IBank bank);
     
     public void removeBank (String bankName);
     
-    public boolean maakOver (IBank bank, int herkomst, int bestemming, Money bedrag) throws NumberDoesntExistException;
+    public boolean maakOver (IBank bank, String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
 }

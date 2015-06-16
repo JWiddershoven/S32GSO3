@@ -21,10 +21,11 @@ public class Bank implements IBank
      *
      */
     private static final long serialVersionUID = -8728841131739353765L;
-    private Map<Integer, IRekeningTbvBank> accounts;
+    private Map<String, IRekeningTbvBank> accounts;
     private Collection<IKlant> clients;
     private int nieuwReknr;
     private String name;
+    private String prefix;
     private Lock bankLock = new ReentrantLock();
     private BasicPublisher bp = new BasicPublisher(new String[]
     {
@@ -33,28 +34,32 @@ public class Bank implements IBank
 
     public Bank(String name)
     {
-        accounts = new HashMap<Integer, IRekeningTbvBank>();
-        clients = new ArrayList<IKlant>();
-        nieuwReknr = 100000000;
+        this.accounts = new HashMap<>();
+        this.clients = new ArrayList<>();
+        this.nieuwReknr = 100000000;
+        this.prefix = name.substring(0, 3);
         this.name = name;
     }
 
     @Override
-    public int openRekening(String name, String city)
+    public String openRekening(String name, String city)
     {
         bankLock.lock();
         try
         {
             if (name.equals("") || city.equals(""))
             {
-                return -1;
+                return "-1";
             }
 
             IKlant klant = getKlant(name, city);
-            IRekeningTbvBank account = new Rekening(nieuwReknr, klant, Money.EURO);
-            accounts.put(nieuwReknr, account);
+            IRekeningTbvBank account = new Rekening(prefix + String.valueOf(nieuwReknr), klant, Money.EURO);
+            accounts.put(prefix + String.valueOf(nieuwReknr), account);
+
+            System.out.println("Prefix: " + prefix);
+            System.out.println("Rekeningnummer: " + nieuwReknr);
             nieuwReknr++;
-            return nieuwReknr - 1;
+            return prefix + String.valueOf(nieuwReknr - 1);
         } finally
         {
             bankLock.unlock();
@@ -76,18 +81,18 @@ public class Bank implements IBank
     }
 
     @Override
-    public IRekening getRekening(int nr)
+    public IRekening getRekening(String nr)
     {
         return accounts.get(nr);
     }
 
     @Override
-    public boolean maakOver(int source, int destination, Money money) throws NumberDoesntExistException
+    public boolean maakOver(String source, String destination, Money money) throws NumberDoesntExistException
     {
         bankLock.lock();
         try
         {
-            if (source == destination)
+            if (source.equals(destination))
             {
                 throw new RuntimeException(
                         "cannot transfer money to your own account");

@@ -20,6 +20,7 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 		random = new Random();
 	}
 
+        @Override
 	public String openRekening(String naam, String plaats, String wachtwoord) {
 		if (naam.equals(""))
 			return null;
@@ -29,8 +30,8 @@ public class Balie extends UnicastRemoteObject implements IBalie {
 		if (wachtwoord.length() < 4 || wachtwoord.length() > 8)
 			return null;
 
-		int nr = bank.openRekening(naam, plaats);
-		if (nr == -1)
+		String nr = bank.openRekening(naam, plaats);
+		if (nr.equals("-1"))
 			return null;
 
 		String accountname = generateId(8);

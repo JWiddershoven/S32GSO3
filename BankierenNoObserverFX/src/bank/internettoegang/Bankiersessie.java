@@ -18,14 +18,14 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
 
     private static final long serialVersionUID = 1L;
     private long laatsteAanroep;
-    private int reknr;
+    private String reknr;
     private IBank bank;
     private BasicPublisher bp = new BasicPublisher(new String[]
     {
         "Saldo"
     });
 
-    public Bankiersessie(int reknr, IBank bank) throws RemoteException
+    public Bankiersessie(String reknr, IBank bank) throws RemoteException
     {
         laatsteAanroep = System.currentTimeMillis();
         this.reknr = reknr;
@@ -39,7 +39,7 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
     }
 
     @Override
-    public boolean maakOver(int bestemming, Money bedrag)
+    public boolean maakOver(String bestemming, Money bedrag)
             throws NumberDoesntExistException, InvalidSessionException,
             RemoteException
     {

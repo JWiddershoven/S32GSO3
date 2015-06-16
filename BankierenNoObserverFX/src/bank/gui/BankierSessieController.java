@@ -117,17 +117,17 @@ public class BankierSessieController implements Initializable, Serializable, Rem
     {
         try
         {
-            int from = 0;
-            int to = 0;
+            String from = "";
+            String to = "";
             try
             {
-                from = Integer.parseInt(tfAccountNr.getText());
-                to = Integer.parseInt(tfToAccountNr.getText());
+                from = tfAccountNr.getText();
+                to = tfToAccountNr.getText();
             } catch (NumberFormatException ex)
             {
                 ex.printStackTrace();
             }
-            if (from == to)
+            if (from.equals(to))
             {
                 taMessage.setText("can't transfer money to your own account");
             }
@@ -147,8 +147,8 @@ public class BankierSessieController implements Initializable, Serializable, Rem
 
     public void updateBalance(String saldo)
     {
-        System.out.println(saldo);
-        tfBalance.setText(saldo);
+        System.out.println("Nieuwe saldo: € " + saldo);
+        //tfBalance.setText(saldo);
     }
 
     @Override

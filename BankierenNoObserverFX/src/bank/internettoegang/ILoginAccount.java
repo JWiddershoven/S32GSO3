@@ -3,7 +3,7 @@ package bank.internettoegang;
 
 public interface ILoginAccount {
 	  String getNaam();
-	  int getReknr();
+	  String getReknr();
 	  boolean checkWachtwoord(String wachtwoord);
 	}
 
