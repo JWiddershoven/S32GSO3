@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,36 +34,41 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable, Serializable, RemotePropertyListener
+public class BankierSessieController extends UnicastRemoteObject implements Initializable, RemotePropertyListener
 {
 
     @FXML
-    private transient Hyperlink hlLogout;
+    private Hyperlink hlLogout;
 
     @FXML
-    private transient TextField tfNameCity;
+    private TextField tfNameCity;
 
     @FXML
-    private transient TextField tfAccountNr;
+    private TextField tfAccountNr;
 
     @FXML
-    private transient TextField tfBalance;
+    private TextField tfBalance;
 
     @FXML
-    private transient TextField tfAmount;
+    private TextField tfAmount;
 
     @FXML
-    private transient TextField tfToAccountNr;
+    private TextField tfToAccountNr;
 
     @FXML
-    private transient Button btTransfer;
+    private Button btTransfer;
 
     @FXML
-    private transient TextArea taMessage;
+    private TextArea taMessage;
 
     private transient BankierClient application;
     private IBalie balie;
     private IBankiersessie sessie;
+
+    public BankierSessieController() throws RemoteException
+    {
+
+    }
 
     public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) throws RemoteException
     {
@@ -147,8 +153,15 @@ public class BankierSessieController implements Initializable, Serializable, Rem
 
     public void updateBalance(String saldo)
     {
-        System.out.println("Nieuwe saldo: € " + saldo);
-        //tfBalance.setText(saldo);
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                tfBalance.setText("€ " + saldo);
+            }
+        });
+
     }
 
     @Override

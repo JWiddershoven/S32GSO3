@@ -5,8 +5,11 @@
         <group>
             <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/gui/BankierSessieController.java</file>
             <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/server/BalieServer.java</file>
+            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/gui/BankSelectController.java</file>
             <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/bankieren/Bank.java</file>
+            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/gui/BankierClient.java</file>
             <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/centrale/CentraleServer.java</file>
+            <file>file:/C:/Users/Jelle/Documents/GitHub/S32GSO3/BankierenNoObserverFX/src/bank/server/BalieController.java</file>
         </group>
     </open-files>
 </project-private>

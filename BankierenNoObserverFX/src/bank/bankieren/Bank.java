@@ -25,15 +25,15 @@ public class Bank implements IBank
     /**
      *
      */
-    private static final long serialVersionUID = -8728841131739353765L;
-    private Map<String, IRekeningTbvBank> accounts;
-    private Collection<IKlant> clients;
-    private int nieuwReknr;
+    private transient static final long serialVersionUID = -8728841131739353765L;
+    private transient Map<String, IRekeningTbvBank> accounts;
+    private transient Collection<IKlant> clients;
+    private transient int nieuwReknr;
     private String name;
     private String prefix;
-    private Lock bankLock = new ReentrantLock();
-    private ICentrale centrale;
-    private BasicPublisher bp = new BasicPublisher(new String[]
+    private transient Lock bankLock = new ReentrantLock();
+    private transient ICentrale centrale;
+    private transient BasicPublisher bp = new BasicPublisher(new String[]
     {
         "Saldo"
     });
@@ -166,7 +166,7 @@ public class Bank implements IBank
             {
                 try
                 {
-                    centrale.addListener(centrale, "ExternOvermaken");
+                    centrale.addListener(this, "ExternOvermaken");
                 } catch (RemoteException ex)
                 {
                     Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);

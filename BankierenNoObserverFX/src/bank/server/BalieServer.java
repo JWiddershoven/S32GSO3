@@ -86,7 +86,7 @@ public class BalieServer extends Application
                 }
                 case "SNS":
                 {
-                    port = 1100;
+                    port = 1097;
                     break;
                 }
                 case "RaboBank":
@@ -102,7 +102,7 @@ public class BalieServer extends Application
             out.close();
             Registry registry = LocateRegistry.createRegistry(port);
             IBalie balie = new Balie(new Bank(nameBank));
-            Naming.rebind(nameBank, balie);
+            registry.rebind(nameBank, balie);
             return true;
 
         } catch (IOException ex)
