@@ -60,9 +60,9 @@ public class BalieController implements Initializable {
             public void changed(ObservableValue ov, Object t, Object t1) {
                 bankNaam = (String) ov.getValue();
                 if (application.startBalie(bankNaam)) {
-                    taMessage.setText(bankNaam + " bank is online");
+                    taMessage.setText(taMessage.getText() + "\n" + bankNaam + " bank is online");
                 } else {
-                    taMessage.setText("Connection Failed");
+                    taMessage.setText(taMessage.getText() + "\n" + "Connection Failed");
                 }
             }
         }

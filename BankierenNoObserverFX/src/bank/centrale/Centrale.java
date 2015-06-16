@@ -5,9 +5,13 @@
  */
 package bank.centrale;
 
+import bank.bankieren.Bank;
 import bank.bankieren.IBank;
 import bank.bankieren.IRekeningTbvBank;
 import bank.bankieren.Money;
+import bank.internettoegang.Balie;
+import bank.internettoegang.IBalie;
+import bank.server.BalieServer;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
 import fontys.util.NumberDoesntExistException;
@@ -28,14 +32,12 @@ public class Centrale implements ICentrale
     private ArrayList<IBank> banks;
     private transient BasicPublisher bp = new BasicPublisher(new String[]
     {
-        "RekeningHerkomst",
-        "RekeningBestemming",
-        "Bedrag"
+        "ExternOvermaken"
     });
 
-    public Centrale()
+    public Centrale() throws RemoteException
     {
-        banks = new ArrayList<>();
+        banks = new ArrayList<>();       
     }
 
     @Override
@@ -63,61 +65,38 @@ public class Centrale implements ICentrale
     }
 
     @Override
-    public boolean maakOver(IBank bank, String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
+    public boolean maakOver(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
     {
         centraleLock.lock();
         try
         {
-            if (herkomst.equals(bestemming))
+            String prefixSource = herkomst.substring(0, 3);
+            String prefixDestination = bestemming.substring(0, 3);
+            
+            for (IBank bank : banks)
             {
-                throw new RuntimeException(
-                        "cannot transfer money to your own account");
+                if (bank.getPrefix().equals(prefixDestination))
+                {
+                    boolean result = bank.maakOverExtern(herkomst, bestemming, bedrag);
+                    if (result)
+                    {
+                        for (IBank b : banks)
+                        {
+                            if (b.getPrefix().equals(prefixSource))
+                            {
+                                bp.inform(this, "ExternOvermaken", null, true);
+                            }
+                        }
+                    }
+                }
             }
-            if (!bedrag.isPositive())
-            {
-                throw new RuntimeException("money must be positive");
-            }
-
-            IRekeningTbvBank source_account = (IRekeningTbvBank) bank.getRekening(herkomst);
-            if (source_account == null)
-            {
-                throw new NumberDoesntExistException("account " + herkomst
-                        + " unknown at " + bank.getName());
-            }
-
-            Money negative = Money.difference(new Money(0, bedrag.getCurrency()),
-                    bedrag);
-            boolean success = source_account.muteer(negative);
-            if (!success)
-            {
-                return false;
-            }
-
-            IRekeningTbvBank dest_account = (IRekeningTbvBank) bank.getRekening(bestemming);
-            if (dest_account == null)
-            {
-                throw new NumberDoesntExistException("account " + bestemming
-                        + " unknown at " + bank.getName());
-            }
-            success = dest_account.muteer(bedrag);
-
-            if (success)
-            {
-                bp.inform(this, "Saldo", null, source_account.getSaldo().getValue());
-            }
-
-            if (!success) // rollback
-            {
-                source_account.muteer(bedrag);
-            }
-
-            return success;
-
         }
         finally
         {
             centraleLock.unlock();
         }
+        
+        return false;
     }
 
     @Override
@@ -135,7 +114,7 @@ public class Centrale implements ICentrale
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-        
+
     }
 
 }

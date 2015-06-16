@@ -22,5 +22,5 @@ public interface ICentrale extends Remote, RemotePublisher, RemotePropertyListen
     
     public void removeBank (String bankName);
     
-    public boolean maakOver (IBank bank, String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
+    public boolean maakOver (String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
 }
