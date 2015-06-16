@@ -137,6 +137,8 @@ public class Bank implements IBank
                 Money negative = Money.difference(new Money(0, money.getCurrency()),
                         money);
 
+                System.out.println("Source: " + negative);
+                System.out.println("Parameter: " + money);
                 success = source_account.muteer(negative);
                 if (!success)
                 {
