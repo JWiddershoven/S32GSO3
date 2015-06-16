@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import bank.bankieren.*;
 import fontys.util.NumberDoesntExistException;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -27,7 +28,7 @@ public class BankTest {
     Money money;
 
     @Before
-    public void setUp() {
+    public void setUp() throws RemoteException {
         bank = new Bank("ABN Amro");
         money = new Money(100000, "€");
         rekening = new Rekening("ABN100000000", new Klant("Jordy", "Valkenswaard"), money);
