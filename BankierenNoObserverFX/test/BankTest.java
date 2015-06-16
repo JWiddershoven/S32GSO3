@@ -30,7 +30,7 @@ public class BankTest {
     public void setUp() {
         bank = new Bank("ABN Amro");
         money = new Money(100000, "€");
-        rekening = new Rekening(100000000, new Klant("Jordy", "Valkenswaard"), money);
+        rekening = new Rekening("ABN100000000", new Klant("Jordy", "Valkenswaard"), money);
     }
 
     public BankTest() {
@@ -50,8 +50,8 @@ public class BankTest {
          * van de gecreeerde bankrekening
          */
         try {
-            assertEquals(100000000, bank.openRekening("Jordy", "Valkenswaard"));
-            assertEquals(100000001, bank.openRekening("Kees", "Amsterdam"));
+            assertEquals("ABN100000000", bank.openRekening("Jordy", "Valkenswaard"));
+            assertEquals("ABN100000001", bank.openRekening("Kees", "Amsterdam"));
         } catch (IllegalArgumentException exc) {
             fail("Bankrekening nummer komt niet overeen.");
         }
@@ -60,9 +60,9 @@ public class BankTest {
     @Test
     public void testOpenRekeningMetLegeString() {
         try {
-            assertEquals(-1, bank.openRekening("", ""));
-            assertEquals(-1, bank.openRekening("", "Valkenswaard"));
-            assertEquals(-1, bank.openRekening("Jordy", ""));
+            assertEquals("-1", bank.openRekening("", ""));
+            assertEquals("-1", bank.openRekening("", "Valkenswaard"));
+            assertEquals("-1", bank.openRekening("Jordy", ""));
         } catch (IllegalArgumentException exc) {
             fail("Lege string is niet toegestaan als parameter.");
         }
@@ -78,13 +78,13 @@ public class BankTest {
         try {
             bank.openRekening("Jordy", "Valkenswaard");
             bank.openRekening("Kees", "Amsterdam");
-            assertNotNull(bank.getRekening(100000000));
+            assertNotNull(bank.getRekening("ABN100000000"));
         } catch (IllegalArgumentException exc) {
             fail("Er bestaat wel een bankrekening met gegeven rekeningnummer.");
         }
 
         try {
-            assertEquals(rekening, bank.getRekening(100000000));
+            assertEquals(rekening, bank.getRekening("ABN100000000"));
         } catch (IllegalArgumentException exc) {
             fail("Bankrekening komt niet overeen.");
         }
@@ -96,7 +96,7 @@ public class BankTest {
         try {
             bank.openRekening("Jordy", "Valkenswaard");
             bank.openRekening("Kees", "Amsterdam");
-            assertNull("Nummer bestaat niet.", bank.getRekening(102300000));
+            assertNull("Nummer bestaat niet.", bank.getRekening("ABN100023000"));
         } catch (IllegalArgumentException exc) {
             fail("Gegeven rekeningnummer bestaat niet.");
         }
@@ -139,7 +139,7 @@ public class BankTest {
         try {
             bank.openRekening("Jordy", "Valkenswaard");
             bank.openRekening("Kees", "Amsterdam");
-            assertTrue("Geld overmaken met geldige parameters", bank.maakOver(100000000, 100000001, new Money(1000, "€")));
+            assertTrue("Geld overmaken met geldige parameters", bank.maakOver("ABN100000000", "ABN100000001", new Money(1000, "€")));
         } catch (IllegalArgumentException | NumberDoesntExistException exc) {
             fail(exc.getMessage());
         }
@@ -149,13 +149,13 @@ public class BankTest {
     public void testMaakOverNaarZelfdeRekening() throws NumberDoesntExistException {
         bank.openRekening("Jordy", "Valkenswaard");
         bank.openRekening("Kees", "Amsterdam");
-        bank.maakOver(100000000, 100000000, new Money(1000, "€"));
+        bank.maakOver("ABN100000000", "ABN100000000", new Money(1000, "€"));
     }
 
     @Test(expected = RuntimeException.class)
     public void testMaakOverMetNegatiefBedrag() throws NumberDoesntExistException {
         bank.openRekening("Jordy", "Valkenswaard");
         bank.openRekening("Kees", "Amsterdam");
-        bank.maakOver(100000000, 100000001, new Money(-1000, "€"));
+        bank.maakOver("ABN100000000", "ABN100000001", new Money(-1000, "€"));
     }
 }

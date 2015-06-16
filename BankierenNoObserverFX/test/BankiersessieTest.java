@@ -48,8 +48,8 @@ public class BankiersessieTest {
         klant = new Klant("Jordy", "Valkenswaard");
         bank.openRekening("Jordy", "Valkenswaard");
         bank.openRekening("Jelle", "Dennenlaan");
-        sessie = new Bankiersessie(100000000, bank);
-        rekening = new Rekening(100000000, klant, bedrag);
+        sessie = new Bankiersessie("ING100000000", bank);
+        rekening = new Rekening("ING100000000", klant, bedrag);
     }
 
     @Test
@@ -69,14 +69,14 @@ public class BankiersessieTest {
         
         //Geld overmaken naar bekende bestemming
         try {
-            assertTrue("Juiste transactie", sessie.maakOver(100000001, new Money(1000, "€")));
+            assertTrue("Juiste transactie", sessie.maakOver("ING100000001", new Money(1000, "€")));
         } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
             Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Geld overmaken naar onbekende bestemming
         try {
-            assertFalse(sessie.maakOver(100000999, new Money(50000, "€")));
+            assertFalse(sessie.maakOver("ING100000999", new Money(50000, "€")));
         } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
             Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,7 +84,7 @@ public class BankiersessieTest {
         //Geld overmaken naar zelfde rekening
         try {
             try {
-                sessie.maakOver(100000000, new Money(1000, "€"));
+                sessie.maakOver("ING100000000", new Money(1000, "€"));
                 fail("Bron en bestemming mogen niet gelijk zijn.");
             } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
                 Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +96,7 @@ public class BankiersessieTest {
         //Geld overmaken met een negatief bedrag
         try {
             try {
-                sessie.maakOver(100000001, new Money(-50000, "€"));
+                sessie.maakOver("ING100000001", new Money(-50000, "€"));
                 fail("Bedrag mag niet negatief zijn.");
             } catch (NumberDoesntExistException | InvalidSessionException | RemoteException ex) {
                 Logger.getLogger(BankiersessieTest.class.getName()).log(Level.SEVERE, null, ex);
