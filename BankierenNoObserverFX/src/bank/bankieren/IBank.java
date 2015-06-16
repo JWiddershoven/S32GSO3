@@ -1,5 +1,6 @@
 package bank.bankieren;
 
+import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
 
@@ -7,7 +8,7 @@ import fontys.util.*;
  * @author 871059
  * 
  */
-public interface IBank extends RemotePublisher {
+public interface IBank extends RemotePublisher, RemotePropertyListener {
 
     /**
      * creatie van een nieuwe bankrekening met een identificerend rekeningnummer; 
@@ -40,6 +41,8 @@ public interface IBank extends RemotePublisher {
      */
     boolean maakOver(String bron, String bestemming, Money bedrag)
             throws NumberDoesntExistException;
+    
+    boolean maakOverExtern(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
 
     /**
      * @param nr
@@ -51,6 +54,8 @@ public interface IBank extends RemotePublisher {
      * @return de naam van deze bank
      */
     String getName();
+    
+    String getPrefix();
     
     
 }
