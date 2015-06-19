@@ -6,8 +6,10 @@
 package bank.gui;
 
 import bank.internettoegang.IBalie;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,16 +25,18 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author frankcoenen
  */
-public class BankSelectController implements Initializable {
+public class BankSelectController implements Initializable
+{
 
     private String bankNaam;
-   
+
     @FXML
     private ComboBox<String> cbSelectBank;
-    
+
     private BankierClient application;
-    
-    public void setApp(BankierClient application){
+
+    public void setApp(BankierClient application)
+    {
         this.application = application;
     }
 
@@ -40,21 +44,28 @@ public class BankSelectController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
 
         cbSelectBank.getItems().addAll(FXCollections.observableArrayList("RaboBank", "ING", "SNS", "ABN AMRO", "ASN"));
-        cbSelectBank.valueProperty().addListener(new ChangeListener() {
+        cbSelectBank.valueProperty().addListener(new ChangeListener()
+        {
             @Override
-            public void changed(ObservableValue ov, Object t, Object t1) {
+            public void changed(ObservableValue ov, Object t, Object t1)
+            {
                 bankNaam = (String) ov.getValue();
-                IBalie balie =  application.connectToBalie(bankNaam);
-                application.gotoLogin(balie, "");
+                IBalie balie = application.connectToBalie(bankNaam);
+                if (balie != null)
+                {
+                    application.gotoLogin(balie, "");
+                }
             }
         }
         );
     }
-    
+
     @FXML
-    private void selectBank(ActionEvent event) {
+    private void selectBank(ActionEvent event)
+    {
     }
 }

@@ -73,7 +73,7 @@ public class BankierClient extends Application {
                         return balie;
 
             } catch (Exception exc) {
-                exc.printStackTrace();
+                System.err.println("De " + bankName + " bank is offline.\nSelecteer een andere bank.");
                 return null;
             }
     }
