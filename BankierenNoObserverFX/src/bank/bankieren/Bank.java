@@ -7,11 +7,13 @@ import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -26,9 +28,9 @@ public class Bank implements IBank
      *
      */
     private transient static final long serialVersionUID = -8728841131739353765L;
-    private transient Map<String, IRekeningTbvBank> accounts;
-    private transient Collection<IKlant> clients;
-    private transient int nieuwReknr;
+    private Map<String, IRekeningTbvBank> accounts;
+    private Collection<IKlant> clients;
+    private int nieuwReknr;
     private String name;
     private String prefix;
     private transient Lock bankLock = new ReentrantLock();
@@ -50,10 +52,22 @@ public class Bank implements IBank
         try
         {
             this.centrale = (ICentrale) reg.lookup("centrale");
-        } catch (NotBoundException ex)
+
+        }
+        catch (NotBoundException ex)
         {
             Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AccessException ex)
+        }
+        catch (AccessException ex)
+        {
+            Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try
+        {
+            centrale.addListener(this, "ExternOvermaken");
+        }
+        catch (RemoteException ex)
         {
             Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,13 +88,41 @@ public class Bank implements IBank
             IRekeningTbvBank account = new Rekening(prefix + String.valueOf(nieuwReknr), klant, Money.EURO);
             accounts.put(prefix + String.valueOf(nieuwReknr), account);
 
+            try
+            {
+                centrale.openRekening(name, city, this.name);
+            }
+            catch (RemoteException ex)
+            {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             System.out.println("Rekening: " + prefix + nieuwReknr);
             nieuwReknr++;
             return prefix + String.valueOf(nieuwReknr - 1);
-        } finally
+        }
+        finally
         {
             bankLock.unlock();
         }
+    }
+
+    @Override
+    public String voegRekeningToe(String naam, String city)
+    {
+        if (name.equals("") || city.equals(""))
+        {
+            return "-1";
+        }
+
+        IKlant klant = getKlant(name, city);
+        IRekeningTbvBank account = new Rekening(prefix + String.valueOf(nieuwReknr), klant, Money.EURO);
+        accounts.put(prefix + String.valueOf(nieuwReknr), account);
+
+        System.out.println("Rekening: " + prefix + nieuwReknr);
+        nieuwReknr++;
+        return prefix + String.valueOf(nieuwReknr - 1);
+
     }
 
     private IKlant getKlant(String name, String city)
@@ -131,20 +173,18 @@ public class Bank implements IBank
 
             boolean success = false;
 
+            Money negative = Money.difference(new Money(0, money.getCurrency()), money);
+
             if (prefixSource.equals(prefixDestination))
             {
-
-                Money negative = Money.difference(new Money(0, money.getCurrency()),
-                        money);
-
                 System.out.println("Source: " + negative);
                 System.out.println("Parameter: " + money);
+
                 success = source_account.muteer(negative);
                 if (!success)
                 {
                     return false;
                 }
-
                 IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);
                 if (dest_account == null)
                 {
@@ -164,18 +204,24 @@ public class Bank implements IBank
                 }
 
                 return success;
-            } else
+            }
+            else
             {
                 try
                 {
-                    centrale.addListener(this, "ExternOvermaken");
-                } catch (RemoteException ex)
+                    success = source_account.muteer(negative);
+
+                    if (success)
+                    {
+                        centrale.maakOver(source, destination, money);
+                        System.out.println(externOvermaken);
+                    }
+                }
+                catch (RemoteException ex)
                 {
                     Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                centrale.maakOver(source, destination, money);
-                
+
                 if (externOvermaken)
                 {
                     success = true;
@@ -184,7 +230,8 @@ public class Bank implements IBank
                 return success;
             }
 
-        } finally
+        }
+        finally
         {
             bankLock.unlock();
         }
@@ -218,42 +265,39 @@ public class Bank implements IBank
     @Override
     public boolean maakOverExtern(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
     {
-        bankLock.lock();
         boolean success = false;
-        try
+        if (!bedrag.isPositive())
         {
-            if (!bedrag.isPositive())
-            {
-                throw new RuntimeException("money must be positive");
-            }
+            throw new RuntimeException("money must be positive");
+        }
 
-            IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(herkomst);
-            if (source_account == null)
-            {
-                throw new NumberDoesntExistException("account " + bestemming
-                        + " unknown at " + name);
-            }
+        IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(bestemming);
+        if (dest_account == null)
+        {
+            throw new NumberDoesntExistException("account " + bestemming
+                    + " unknown at " + name);
+        }
 
-            Money negative = Money.difference(new Money(0, bedrag.getCurrency()),
-                    bedrag);
-            success = source_account.muteer(negative);
+        success = dest_account.muteer(bedrag);
 
-            if (success)
-            {
-                bp.inform(this, "Saldo", null, source_account.getSaldo().getValue());
-            }
+        if (success)
+        {
+            bp.inform(this, "Saldo", null, dest_account.getSaldo().getValue());
+        }
 
-            if (!success) // rollback
+        if (!success) // rollback
+        {
+            try
             {
                 centrale.maakOver(bestemming, herkomst, bedrag);
             }
-
-            return success;
-        } finally
-        {
-            bankLock.unlock();
+            catch (RemoteException ex)
+            {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
+        return success;
     }
 
     @Override

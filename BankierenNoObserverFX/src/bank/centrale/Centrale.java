@@ -7,6 +7,7 @@ package bank.centrale;
 
 import bank.bankieren.Bank;
 import bank.bankieren.IBank;
+import bank.bankieren.IRekening;
 import bank.bankieren.IRekeningTbvBank;
 import bank.bankieren.Money;
 import bank.internettoegang.Balie;
@@ -18,6 +19,7 @@ import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -26,19 +28,18 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author Jelle
  */
-public class Centrale implements ICentrale, Serializable
+public class Centrale extends UnicastRemoteObject implements ICentrale
 {
 
-    private transient Lock centraleLock = new ReentrantLock();
     private ArrayList<IBank> banks;
-    private transient BasicPublisher bp = new BasicPublisher(new String[]
+    private BasicPublisher bp = new BasicPublisher(new String[]
     {
         "ExternOvermaken"
     });
 
     public Centrale() throws RemoteException
     {
-        banks = new ArrayList<>();       
+        banks = new ArrayList<>();     
     }
 
     @Override
@@ -68,9 +69,6 @@ public class Centrale implements ICentrale, Serializable
     @Override
     public boolean maakOver(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
     {
-        centraleLock.lock();
-        try
-        {
             String prefixSource = herkomst.substring(0, 3);
             String prefixDestination = bestemming.substring(0, 3);
             
@@ -91,18 +89,25 @@ public class Centrale implements ICentrale, Serializable
                     }
                 }
             }
-        }
-        finally
-        {
-            centraleLock.unlock();
-        }
         
         return false;
     }
-
+    
+    public void openRekening(String naam, String city, String bankNaam)
+    {
+        for (IBank bank : banks)
+        {
+            if (bank.getName().equals(bankNaam))
+            {
+                bank.voegRekeningToe(naam, city);
+            }
+        }
+    }
     @Override
     public void addListener(RemotePropertyListener rl, String string) throws RemoteException
     {
+        IBank bank = (IBank) rl;
+        banks.add(bank);
         bp.addListener(rl, string);
     }
 
@@ -115,7 +120,7 @@ public class Centrale implements ICentrale, Serializable
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-
+        
     }
 
 }

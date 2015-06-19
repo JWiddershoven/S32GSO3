@@ -3,6 +3,7 @@ package bank.bankieren;
 import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
+import java.rmi.RemoteException;
 
 /**
  * @author 871059
@@ -56,6 +57,8 @@ public interface IBank extends RemotePublisher, RemotePropertyListener {
     String getName();
     
     String getPrefix();
+   
+    String voegRekeningToe(String naam, String city);
     
     
 }

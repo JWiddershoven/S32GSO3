@@ -11,6 +11,7 @@ import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.NumberDoesntExistException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -18,9 +19,11 @@ import java.rmi.Remote;
  */
 public interface ICentrale extends Remote, RemotePublisher, RemotePropertyListener
 {
-    public void addBank (IBank bank);
+    public void addBank (IBank bank) throws RemoteException;
     
-    public void removeBank (String bankName);
+    public void removeBank (String bankName)throws RemoteException;
     
-    public boolean maakOver (String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
+    public boolean maakOver (String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException, RemoteException;
+    
+    public void openRekening (String naam, String city, String prefix) throws RemoteException;
 }
