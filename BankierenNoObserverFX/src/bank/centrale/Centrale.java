@@ -131,9 +131,11 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
             IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);
             if (dest_account == null)
             {
+                source_account.muteer(money);
                 throw new NumberDoesntExistException("account " + destination
                         + " unknown at " + prefixDestination);
             }
+            
             success = dest_account.muteer(money);
 
             
