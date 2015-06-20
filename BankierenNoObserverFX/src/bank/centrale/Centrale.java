@@ -21,8 +21,12 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,25 +36,30 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
 {
 
     private ArrayList<IBank> banks;
+    private transient Lock bankLock = new ReentrantLock();
     private BasicPublisher bp = new BasicPublisher(new String[]
     {
         "ExternOvermaken"
     });
 
+    private Map<String, IRekeningTbvBank> accounts;
+
     public Centrale() throws RemoteException
     {
-        banks = new ArrayList<>();     
+        this.banks = new ArrayList<>();
+        this.accounts = new HashMap<>();
     }
 
     @Override
-    public void addBank(IBank bank)
+    public void addBank(String bankName)
     {
-        for (IBank b : banks)
+        try
         {
-            if (!b.getName().equals(bank.getName()))
-            {
-                banks.add(bank);
-            }
+            banks.add(new Bank(bankName));
+        }
+        catch (RemoteException ex)
+        {
+            Logger.getLogger(Centrale.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -67,42 +76,92 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
     }
 
     @Override
-    public boolean maakOver(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException
+    public IRekening getRekening(String nr)
     {
-            String prefixSource = herkomst.substring(0, 3);
-            String prefixDestination = bestemming.substring(0, 3);
-            
-            for (IBank bank : banks)
-            {
-                if (bank.getPrefix().equals(prefixDestination))
-                {
-                    boolean result = bank.maakOverExtern(herkomst, bestemming, bedrag);
-                    if (result)
-                    {
-                        for (IBank b : banks)
-                        {
-                            if (b.getPrefix().equals(prefixSource))
-                            {
-                                bp.inform(this, "ExternOvermaken", null, true);
-                            }
-                        }
-                    }
-                }
-            }
-        
-        return false;
+        return accounts.get(nr);
     }
-    
-    public void openRekening(String naam, String city, String bankNaam)
+
+    @Override
+    public IBank getBank(String prefix)
     {
-        for (IBank bank : banks)
+        IBank bank = null;
+        for (IBank b : banks)
         {
-            if (bank.getName().equals(bankNaam))
+            if (b.getPrefix().equals(prefix))
             {
-                bank.voegRekeningToe(naam, city);
+                bank = b;
             }
         }
+
+        return bank;
     }
+
+    @Override
+    public boolean maakOver(String source, String destination, Money money) throws NumberDoesntExistException
+    {
+        bankLock.lock();
+        try
+        {
+            String prefixSource = source.substring(0, 3);
+            String prefixDestination = destination.substring(0, 3);
+
+            IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);
+            if (source_account == null)
+            {
+                throw new NumberDoesntExistException("account " + source
+                        + " unknown at " + prefixSource);
+            }
+
+            IBank bankSource = getBank(prefixSource);
+            IBank bankDestination = getBank(prefixDestination);
+
+            boolean success = false;
+
+            Money negative = Money.difference(new Money(0, money.getCurrency()), money);
+
+            System.out.println("Source: " + negative);
+            System.out.println("Parameter: " + money);
+
+            success = source_account.muteer(negative);
+            if (!success)
+            {
+                return false;
+            }
+            
+            IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);
+            if (dest_account == null)
+            {
+                throw new NumberDoesntExistException("account " + destination
+                        + " unknown at " + prefixDestination);
+            }
+            success = dest_account.muteer(money);
+
+            
+            if (success)
+            {
+                bankSource.informSession(source_account.getSaldo());
+            }
+
+            if (!success) // rollback
+            {
+                source_account.muteer(money);
+            }
+
+            return success;
+        }
+
+        finally
+        {
+            bankLock.unlock();
+        }
+    }
+
+    @Override
+    public void openRekening(String rekNummer, IRekeningTbvBank account)
+    {
+        accounts.put(rekNummer, account);
+    }
+
     @Override
     public void addListener(RemotePropertyListener rl, String string) throws RemoteException
     {
@@ -120,7 +179,7 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-        
+
     }
 
 }

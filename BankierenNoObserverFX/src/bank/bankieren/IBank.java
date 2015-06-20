@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
  * @author 871059
  * 
  */
-public interface IBank extends RemotePublisher, RemotePropertyListener {
+public interface IBank extends RemotePublisher {
 
     /**
      * creatie van een nieuwe bankrekening met een identificerend rekeningnummer; 
@@ -42,8 +42,6 @@ public interface IBank extends RemotePublisher, RemotePropertyListener {
      */
     boolean maakOver(String bron, String bestemming, Money bedrag)
             throws NumberDoesntExistException;
-    
-    boolean maakOverExtern(String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException;
 
     /**
      * @param nr
@@ -57,8 +55,7 @@ public interface IBank extends RemotePublisher, RemotePropertyListener {
     String getName();
     
     String getPrefix();
-   
-    String voegRekeningToe(String naam, String city);
     
+    void informSession(Money saldo);
     
 }

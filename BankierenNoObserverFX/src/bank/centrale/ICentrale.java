@@ -6,6 +6,8 @@
 package bank.centrale;
 
 import bank.bankieren.IBank;
+import bank.bankieren.IRekening;
+import bank.bankieren.IRekeningTbvBank;
 import bank.bankieren.Money;
 import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
@@ -19,11 +21,16 @@ import java.rmi.RemoteException;
  */
 public interface ICentrale extends Remote, RemotePublisher, RemotePropertyListener
 {
-    public void addBank (IBank bank) throws RemoteException;
+    public void addBank (String bankName) throws RemoteException;
     
     public void removeBank (String bankName)throws RemoteException;
     
     public boolean maakOver (String herkomst, String bestemming, Money bedrag) throws NumberDoesntExistException, RemoteException;
     
-    public void openRekening (String naam, String city, String prefix) throws RemoteException;
+    public void openRekening (String rekNummer, IRekeningTbvBank account) throws RemoteException;
+    
+    public IRekening getRekening(String nr) throws RemoteException;
+    
+    public IBank getBank(String prefix) throws RemoteException;
 }
+

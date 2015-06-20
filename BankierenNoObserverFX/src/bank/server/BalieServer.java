@@ -6,6 +6,8 @@
 package bank.server;
 
 import bank.bankieren.Bank;
+import bank.centrale.Centrale;
+import bank.centrale.ICentrale;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
@@ -15,7 +17,9 @@ import fontys.observer.RemotePublisher;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.AccessException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -42,6 +46,7 @@ public class BalieServer extends Application
     private transient final double MINIMUM_WINDOW_WIDTH = 600.0;
     private transient final double MINIMUM_WINDOW_HEIGHT = 200.0;
     private String nameBank;
+    private ICentrale centrale = null;
 
     public void BalieServer()
     {
@@ -61,7 +66,8 @@ public class BalieServer extends Application
             gotoBankSelect();
 
             primaryStage.show();
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -101,19 +107,34 @@ public class BalieServer extends Application
             props.store(out, null);
             out.close();
             Registry registry = LocateRegistry.createRegistry(port);
-            IBalie balie = new Balie(new Bank(nameBank));
+            Bank bank = new Bank(nameBank);
+            IBalie balie = new Balie(bank);
             registry.rebind(nameBank, balie);
+
+            Registry reg = LocateRegistry.getRegistry(1098);
+            try
+            {
+                this.centrale = (ICentrale) reg.lookup("centrale");
+                centrale.addBank(nameBank);
+            }
+            catch (NotBoundException | AccessException ex)
+            {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return true;
 
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(BalieServer.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
+        }
+        finally
         {
             try
             {
                 out.close();
-            } catch (IOException ex)
+            }
+            catch (IOException ex)
             {
                 Logger.getLogger(BalieServer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -127,7 +148,8 @@ public class BalieServer extends Application
         {
             BalieController bankSelect = (BalieController) replaceSceneContent("Balie.fxml");
             bankSelect.setApp(this);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Logger.getLogger(BankierClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -143,7 +165,8 @@ public class BalieServer extends Application
         try
         {
             page = (AnchorPane) loader.load(in);
-        } finally
+        }
+        finally
         {
             in.close();
         }
