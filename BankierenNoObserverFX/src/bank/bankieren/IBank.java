@@ -54,8 +54,15 @@ public interface IBank extends RemotePublisher {
      */
     String getName();
     
+    /**
+     * @return de prefix van deze bank
+     */
     String getPrefix();
     
+    /**
+     * Informeert de sessie met het nieuwe saldo van de source rekening
+     * @param saldo mag niet null zijn
+     */
     void informSession(Money saldo);
     
 }
