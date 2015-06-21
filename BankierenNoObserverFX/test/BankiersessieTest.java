@@ -10,8 +10,10 @@ import bank.bankieren.IRekening;
 import bank.bankieren.Klant;
 import bank.bankieren.Money;
 import bank.bankieren.Rekening;
+import bank.internettoegang.Balie;
 import bank.internettoegang.Bankiersessie;
 import bank.internettoegang.IBankiersessie;
+import bank.server.BalieServer;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
 import java.rmi.RemoteException;
@@ -30,25 +32,32 @@ public class BankiersessieTest {
 
     public BankiersessieTest() {
     }
-    Bank bank;
-      IBankiersessie sessie;
-      Money bedrag;
-      IRekening rekening;
-      IKlant klant;
+    static Bank bank;
+    static IBankiersessie sessie;
+    Money bedrag;
+    IRekening rekening;
+    IKlant klant;
+    static BalieServer balieServer;
+    static Balie balie;
+    static String accountname;
 
     @BeforeClass
     public static void setUpClass() throws RemoteException {
-        
+        balieServer = new BalieServer();
+        balieServer.startBalie("ING");
+        bank = new Bank("ING");
+        balie = new Balie(bank);
+        accountname = balie.openRekening("Jordy", "Valkenswaard", "Password");
+        sessie = balie.logIn(accountname, "Password");
     }
 
     @Before
-    public void setUp() throws RemoteException {
-        bank = new Bank("ING");
+    public void setUp() throws RemoteException { 
         bedrag = new Money(500000, "€");
-        klant = new Klant("Jordy", "Valkenswaard");
-        bank.openRekening("Jordy", "Valkenswaard");
-        bank.openRekening("Jelle", "Dennenlaan");
-        sessie = new Bankiersessie("ING100000000", bank);
+        //klant = new Klant("Jordy", "Valkenswaard");
+        //bank.openRekening("Jordy", "Valkenswaard");
+        //bank.openRekening("Jelle", "Dennenlaan");
+        //sessie = new Bankiersessie("ING100000000", bank);
         rekening = new Rekening("ING100000000", klant, bedrag);
     }
 
@@ -66,7 +75,7 @@ public class BankiersessieTest {
          * @throws NumberDoesntExistException als bestemming onbekend is
          * @throws InvalidSessionException als sessie niet meer geldig is
          */
-        
+
         //Geld overmaken naar bekende bestemming
         try {
             assertTrue("Juiste transactie", sessie.maakOver("ING100000001", new Money(1000, "€")));
@@ -127,8 +136,8 @@ public class BankiersessieTest {
     public void testIsGeldig() {
         try {
             /**
-             * @returns true als de laatste aanroep van getRekening of maakOver voor
-             * deze sessie minder dan GELDIGHEIDSDUUR geleden is en er geen
+             * @returns true als de laatste aanroep van getRekening of maakOver
+             * voor deze sessie minder dan GELDIGHEIDSDUUR geleden is en er geen
              * communicatiestoornis in de tussentijd is opgetreden, anders false
              */
             assertTrue(sessie.isGeldig());

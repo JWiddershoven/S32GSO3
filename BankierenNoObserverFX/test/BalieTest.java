@@ -6,8 +6,11 @@
 
 import bank.bankieren.Bank;
 import bank.bankieren.IBank;
+import bank.centrale.Centrale;
+import bank.centrale.CentraleServer;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
+import bank.server.BalieServer;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,13 +30,17 @@ public class BalieTest {
     static IBank bank;
     static IBalie balie;
     static String accountname;
+    
+    static BalieServer balieServer;
 
     public BalieTest() {
 
     }
 
     @BeforeClass
-    public static void setUpClass() throws RemoteException {
+    public static void setUpClass() throws RemoteException, Exception {
+        balieServer = new BalieServer();
+        balieServer.startBalie("ING");
         bank = new Bank("ING");
         balie = new Balie(bank);
         accountname = balie.openRekening("Jordy", "Valkenswaard", "Password");

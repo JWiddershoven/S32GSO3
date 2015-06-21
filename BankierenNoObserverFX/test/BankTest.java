@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import bank.bankieren.*;
+import bank.server.BalieServer;
 import fontys.util.NumberDoesntExistException;
 import java.rmi.RemoteException;
 
@@ -22,10 +23,17 @@ import java.rmi.RemoteException;
  * @author Jordy
  */
 public class BankTest {
-
+    
+    static BalieServer balieServer;
     IBank bank;
     IRekeningTbvBank rekening;
     Money money;
+    
+    @BeforeClass
+    public static void setUpClass() {
+        balieServer = new BalieServer();
+        balieServer.startBalie("ABN Amro");
+    }
 
     @Before
     public void setUp() throws RemoteException {
