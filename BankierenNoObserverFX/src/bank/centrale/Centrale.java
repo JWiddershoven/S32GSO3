@@ -141,11 +141,13 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
             
             if (success)
             {
+                System.out.println("Informed bank");
                 bankSource.informSession(source_account.getSaldo());
             }
 
             if (!success) // rollback
             {
+                System.out.println("success false");
                 source_account.muteer(money);
             }
 

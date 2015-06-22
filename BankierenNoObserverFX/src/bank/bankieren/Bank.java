@@ -27,15 +27,15 @@ public class Bank implements IBank
     /**
      *
      */
-    private transient static final long serialVersionUID = -8728841131739353765L;
+    private static final long serialVersionUID = -8728841131739353765L;
     private Map<String, IRekeningTbvBank> accounts;
     private Collection<IKlant> clients;
     private int nieuwReknr;
     private String name;
     private String prefix;
-    private transient Lock bankLock = new ReentrantLock();
-    private transient ICentrale centrale;
-    private transient BasicPublisher bp = new BasicPublisher(new String[]
+    private Lock bankLock = new ReentrantLock();
+    private ICentrale centrale;
+    private BasicPublisher bp = new BasicPublisher(new String[]
     {
         "Saldo"
     });
@@ -163,6 +163,7 @@ public class Bank implements IBank
     @Override
     public void informSession(Money saldo)
     {
+        System.out.println("Nieuwe saldo van source: " + saldo);
         bp.inform(this, "Saldo", null, saldo);
     }
 
