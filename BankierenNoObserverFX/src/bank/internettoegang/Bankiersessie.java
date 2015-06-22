@@ -33,6 +33,7 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
         bank.addListener(this, "Saldo");
     }
 
+    @Override
     public boolean isGeldig()
     {
         return System.currentTimeMillis() - laatsteAanroep < GELDIGHEIDSDUUR;
@@ -46,7 +47,7 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
 
         updateLaatsteAanroep();
 
-        if (reknr == bestemming)
+        if (reknr.equals(bestemming))
         {
             throw new RuntimeException(
                     "source and destination must be different");
@@ -89,7 +90,7 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-        bp.inform(this, "Saldo", null, String.valueOf(pce.getNewValue()));
+        bp.inform(this, "Saldo", null, pce.getNewValue());
     }
 
     @Override

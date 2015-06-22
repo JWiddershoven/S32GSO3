@@ -115,7 +115,7 @@ public class BalieServer extends Application
             try
             {
                 this.centrale = (ICentrale) reg.lookup("centrale");
-                centrale.addBank(nameBank);
+                centrale.addBank(bank);
             }
             catch (NotBoundException | AccessException ex)
             {

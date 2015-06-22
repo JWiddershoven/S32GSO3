@@ -23,10 +23,10 @@ public interface ICentrale extends Remote, RemotePublisher, RemotePropertyListen
 {
     /**
      * Voegt een bank toe aan de centrale
-     * @param bankName de naam van de bank, mag niet null of leeg zijn
+     * @param bank Het bank object dat bij de balieServer is aangemaakt
      * @throws RemoteException 
      */
-    public void addBank (String bankName) throws RemoteException;
+    public void addBank (IBank bank) throws RemoteException;
     
     /**
      * Verwijdert een bank van de centrale

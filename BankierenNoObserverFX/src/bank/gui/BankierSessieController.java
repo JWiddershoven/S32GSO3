@@ -158,7 +158,7 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
             @Override
             public void run()
             {
-                tfBalance.setText("€ " + saldo);
+                tfBalance.setText(saldo);
             }
         });
 
