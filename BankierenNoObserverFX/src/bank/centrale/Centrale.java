@@ -51,20 +51,13 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
     }
 
     @Override
-    public void addBank(String bankName)
+    public void addBank(IBank bank)
     {
-        try
-        {
-            banks.add(new Bank(bankName));
-        }
-        catch (RemoteException ex)
-        {
-            Logger.getLogger(Centrale.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        banks.add(bank);
     }
 
     @Override
-    public void removeBank(String bankName)
+    public void removeBank(String bankName) throws RemoteException
     {
         for (IBank b : banks)
         {
@@ -82,7 +75,7 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
     }
 
     @Override
-    public IBank getBank(String prefix)
+    public IBank getBank(String prefix) throws RemoteException
     {
         IBank bank = null;
         for (IBank b : banks)
@@ -97,7 +90,7 @@ public class Centrale extends UnicastRemoteObject implements ICentrale
     }
 
     @Override
-    public boolean maakOver(String source, String destination, Money money) throws NumberDoesntExistException
+    public boolean maakOver(String source, String destination, Money money) throws NumberDoesntExistException, RemoteException
     {
         bankLock.lock();
         try

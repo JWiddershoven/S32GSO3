@@ -3,13 +3,14 @@ package bank.bankieren;
 import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * @author 871059
  * 
  */
-public interface IBank extends RemotePublisher {
+public interface IBank extends RemotePublisher, Remote {
 
     /**
      * creatie van een nieuwe bankrekening met een identificerend rekeningnummer; 
@@ -23,7 +24,7 @@ public interface IBank extends RemotePublisher {
      * @return -1 zodra naam of plaats een lege string en anders het nummer van de
      *         gecreeerde bankrekening
      */
-    String openRekening(String naam, String plaats);
+    String openRekening(String naam, String plaats) throws RemoteException;
 
     /**
      * er wordt bedrag overgemaakt van de bankrekening met nummer bron naar de
@@ -41,28 +42,28 @@ public interface IBank extends RemotePublisher {
      *             als een van de twee bankrekeningnummers onbekend is
      */
     boolean maakOver(String bron, String bestemming, Money bedrag)
-            throws NumberDoesntExistException;
+            throws NumberDoesntExistException, RemoteException;
 
     /**
      * @param nr
      * @return de bankrekening met nummer nr mits bij deze bank bekend, anders null
      */
-    IRekening getRekening(String nr);
+    IRekening getRekening(String nr) throws RemoteException;
 
     /**
      * @return de naam van deze bank
      */
-    String getName();
+    String getName() throws RemoteException;
     
     /**
      * @return de prefix van deze bank
      */
-    String getPrefix();
+    String getPrefix() throws RemoteException;
     
     /**
      * Informeert de sessie met het nieuwe saldo van de source rekening
      * @param saldo mag niet null zijn
      */
-    void informSession(Money saldo);
+    void informSession(Money saldo) throws RemoteException;
     
 }

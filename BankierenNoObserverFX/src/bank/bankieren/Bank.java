@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Bank implements IBank
+public class Bank extends UnicastRemoteObject implements IBank 
 {
 
     /**
