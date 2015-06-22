@@ -90,7 +90,6 @@ public class Bankiersessie extends UnicastRemoteObject implements IBankiersessie
     @Override
     public void propertyChange(PropertyChangeEvent pce) throws RemoteException
     {
-        System.out.println("Saldo bij bankiersessie: " + pce.getNewValue());
         bp.inform(this, "Saldo", null, pce.getNewValue());
     }
 
