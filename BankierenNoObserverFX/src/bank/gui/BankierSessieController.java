@@ -61,7 +61,7 @@ public class BankierSessieController extends UnicastRemoteObject implements Init
     @FXML
     private TextArea taMessage;
 
-    private transient BankierClient application;
+    private BankierClient application;
     private IBalie balie;
     private IBankiersessie sessie;
 
