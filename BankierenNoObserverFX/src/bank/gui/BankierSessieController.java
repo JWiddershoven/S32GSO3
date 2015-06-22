@@ -13,7 +13,6 @@ import fontys.observer.RemotePropertyListener;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

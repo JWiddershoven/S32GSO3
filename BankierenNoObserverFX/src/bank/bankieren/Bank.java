@@ -1,13 +1,9 @@
 package bank.bankieren;
 
-import bank.centrale.Centrale;
 import bank.centrale.ICentrale;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
-import fontys.observer.RemotePublisher;
 import fontys.util.*;
-import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

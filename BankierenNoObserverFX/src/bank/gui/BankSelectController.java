@@ -6,10 +6,8 @@
 package bank.gui;
 
 import bank.internettoegang.IBalie;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,8 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class

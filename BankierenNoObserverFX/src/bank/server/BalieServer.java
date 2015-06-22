@@ -6,21 +6,15 @@
 package bank.server;
 
 import bank.bankieren.Bank;
-import bank.centrale.Centrale;
 import bank.centrale.ICentrale;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
-import fontys.observer.BasicPublisher;
-import fontys.observer.RemotePropertyListener;
-import fontys.observer.RemotePublisher;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.AccessException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Properties;

@@ -1,6 +1,5 @@
 package bank.bankieren;
 
-import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import fontys.util.*;
 import java.rmi.Remote;

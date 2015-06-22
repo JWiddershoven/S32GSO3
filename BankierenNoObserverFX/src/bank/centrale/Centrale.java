@@ -5,19 +5,14 @@
  */
 package bank.centrale;
 
-import bank.bankieren.Bank;
 import bank.bankieren.IBank;
 import bank.bankieren.IRekening;
 import bank.bankieren.IRekeningTbvBank;
 import bank.bankieren.Money;
-import bank.internettoegang.Balie;
-import bank.internettoegang.IBalie;
-import bank.server.BalieServer;
 import fontys.observer.BasicPublisher;
 import fontys.observer.RemotePropertyListener;
 import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -25,8 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
